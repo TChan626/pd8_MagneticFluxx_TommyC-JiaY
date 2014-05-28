@@ -1,0 +1,10 @@
+Make Card Interface
+Make Deck and Discard Pile Queues
+Create classes implementing Card
+Create all of the subclasses representing cards
+Coding Keeper effects
+Coding Creeper effects
+Coding the Action cards effects
+Coding the New Rules effects
+Create GUI
+AI?
