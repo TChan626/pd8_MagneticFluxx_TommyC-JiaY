@@ -1,4 +1,4 @@
-public class Keeper implements Card{
+public class Keeper extends Card{
 
     private String name;
     private String effect;
@@ -9,16 +9,5 @@ public class Keeper implements Card{
 	this.effect = effect;
     }
 
-    public String getName(){
-	return name;
-    }
-
-    public String getEffect(){
-	return effect;
-    }
-
-    public void discard(){
-	
-    }
 }
     

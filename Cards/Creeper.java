@@ -1,4 +1,4 @@
-public class Creeper implements Card{
+public class Creeper extends Card{
 
     private String name;
     private String effect;
@@ -8,15 +8,4 @@ public class Creeper implements Card{
 	this.effect = effect;
     }
 
-    public String getName(){
-	return name;
-    }
-
-    public String getEffect(){
-	return effect;
-    }
-
-    public void discard(){
-	
-    }
 }

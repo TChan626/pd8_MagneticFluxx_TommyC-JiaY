@@ -1,9 +1,21 @@
-public interface Card{
+public class Card{
 
-    public String getName();
+    private String name,effect;
 
-    public String getEffect();
+    public Card(String name, String effect){
+	this.name = name;
+	this.effect = effect;
+    }
 
-    public void discard();
+    public String getName(){
+	return name;
+    }
+
+    public String getEffect(){
+	return effect;
+    }
+
+    public void discard(){
+    }
 
 }

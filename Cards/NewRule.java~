@@ -1,0 +1,11 @@
+public class NewRule extends Card{
+
+    private String name,effect;
+   
+    public NewRule(String name, String effect){
+	this.name = name;
+	this.effect = effect;
+    }
+
+
+}
