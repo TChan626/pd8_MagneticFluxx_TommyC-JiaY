@@ -1,7 +1,8 @@
 Make Card Interface
 Make Deck and Discard Pile Queues
-Create classes implementing Card
-Create all of the subclasses representing cards
+Create classes extending Card
+Create a Hand and a Board
+Create all of the methods to represent different cards
 Coding Keeper effects
 Coding Creeper effects
 Coding the Action cards effects

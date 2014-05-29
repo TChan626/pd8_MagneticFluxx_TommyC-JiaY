@@ -7,3 +7,8 @@
 5-28-2014
   UML
   To-Do List
+
+5-29-2014
+  Changed Card from an interface to a super class
+  Made new classes (NewRule, Hand) and edited old ones to fit the above change
+  Changed To Do List to fit Hand and Board
