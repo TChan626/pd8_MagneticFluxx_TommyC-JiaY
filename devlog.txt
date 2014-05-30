@@ -12,3 +12,9 @@
   Changed Card from an interface to a super class
   Made new classes (NewRule, Hand) and edited old ones to fit the above change
   Changed To Do List to fit Hand and Board
+  
+05-30-2014
+  Coded Hand and edit discard (removed discard from discard)
+  Edit subclass of superclass Card
+  Created Table
+  
