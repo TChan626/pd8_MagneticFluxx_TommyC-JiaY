@@ -5,8 +5,7 @@ public class Keeper extends Card{
     //picture instance variable
 
     public Keeper(String name, String effect){
-	this.name = name;
-	this.effect = effect;
+	super(name,effect);
     }
 
 }

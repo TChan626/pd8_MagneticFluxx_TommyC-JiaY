@@ -1,10 +1,11 @@
+import java.util.ArrayList;
+
 public class NewRule extends Card{
 
     private String name,effect,type;
    
     public NewRule(String name, String effect, String type){
-	this.name = name;
-	this.effect = effect;
+	super(name,effect);
 	this.type = type;
     }
 
@@ -15,5 +16,6 @@ public class NewRule extends Card{
 	}
 	return stuff;
     }
+
 
 }

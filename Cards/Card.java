@@ -15,7 +15,4 @@ public class Card{
 	return effect;
     }
 
-    public void discard(){
-    }
-
 }
