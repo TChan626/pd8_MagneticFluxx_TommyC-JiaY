@@ -1,6 +1,7 @@
 Make Card Interface
 Make Deck and Discard Pile Queues
 Create classes extending Card
+Create drivers or main method to test each subclass
 Create a Hand and a Board
 Create all of the methods to represent different cards
 Coding Keeper effects
