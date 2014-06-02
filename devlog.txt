@@ -18,3 +18,12 @@
   Edit subclass of superclass Card
   Created Table
   
+06-02-2014
+  Recreated the UML diagram 
+    Before Card was an interface now it's changed to a superclass 
+    Also added to the original diagram (Deck, Discard, Table,Hand)
+  Added to the Table class (Hand getPlayer)
+  Try to tested out Deck 
+    
+  
+  
