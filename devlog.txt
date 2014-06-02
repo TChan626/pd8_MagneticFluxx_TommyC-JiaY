@@ -18,3 +18,8 @@
   Edit subclass of superclass Card
   Created Table
   
+06-02-2014
+  recreated the UML diagram 
+    before Card was an interface now its changed to a superclass 
+  
+  
