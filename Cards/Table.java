@@ -42,13 +42,19 @@ public class Table{
 	return discard;
     }
 
-    public Hand getPlayer(int i){
-	if(i < 1 || i > 2){
-	    throw new IllegalArgumentException("Must select one of two players");
-	}
-	if(i == 1)
+    public Hand getPlayer(boolean player){
+	if(player == true)
 	    return player1;
 	else
 	    return player2;
+    }
+
+
+
+    public static void main(String[]args){
+
+	Table table = new Table();
+	Deck dec = new Deck();
+	System.out.println(dec.toString());
     }
 }
