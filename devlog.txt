@@ -25,5 +25,9 @@
   Added to the Table class (Hand getPlayer)
   Try to tested out Deck 
     
-  
+06-03-2014
+  created the different cards
+  tried to finish creating the deck of 100 card
+  but only vreated the keeper, creeper, and actions cards 
+  53 more to go
   
