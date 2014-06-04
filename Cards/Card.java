@@ -2,10 +2,10 @@ public class Card{
 
     private String name,effect,type;
 
-    public Card(String name, String effect, String type){
+    public Card(String name, String effect){
 	this.name = name;
 	this.effect = effect;
-	this.type = type;
+	this.type = "";
     }
 
     public String getName(){
