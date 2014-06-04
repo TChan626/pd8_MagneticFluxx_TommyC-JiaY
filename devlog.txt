@@ -31,3 +31,7 @@
   but only vreated the keeper, creeper, and actions cards 
   53 more to go
   
+06-04-2014
+  Fixed the cards that were created 
+  created other cards 
+  
