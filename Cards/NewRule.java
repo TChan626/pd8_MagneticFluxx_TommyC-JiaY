@@ -4,9 +4,9 @@ public class NewRule extends Card{
 
     private String name,effect,type;
    
-    public NewRule(String name, String effect, String type){
+    public NewRule(String name, String effect){
 	super(name,effect);
-	this.type = type;
+	this.type = "NewRule";
     }
 
     public ArrayList<Card> draw(int i, Deck deck){
