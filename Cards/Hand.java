@@ -16,9 +16,9 @@ public class Hand{
         return hand.size();
     }
 
-    public Card remove(Card c){
+    public Card remove(String c){
         for(int i = 0; i < hand.size(); i++)
-            if (hand.get(i).equals(c)){
+            if (hand.get(i).getName().equals(c)){
                 return hand.remove(i);
             }
         return null;
@@ -27,4 +27,13 @@ public class Hand{
     public void add(Card c){
         hand.add(c);
     }
+    
+    public String toString(){
+        String ret = "";
+        for(int i = 0; i < hand.size(); i ++){
+            ret += hand.get(i).getName() + "\n";
+        }
+        return ret;
+    }
+    
 }

@@ -19,4 +19,12 @@ public class Discard{
     public int size(){
 	return dis.size();
     }
+    
+    public String toString(){
+        String ret = "";
+        for(int i = 0; i < dis.size(); i ++){
+            ret += dis.get(i).getName() + "\n";
+        }
+        return ret;
+    }
 }

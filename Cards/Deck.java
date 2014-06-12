@@ -8,7 +8,6 @@ public class Deck{
     public Deck(){
 	deck = new ArrayList<Card>(100); //this is a queue
 	//insert all of the different cards
-	deck.add(new Keeper("Chocolate", "Chocolate"));
 	deck.add(new Keeper("Brain", "Brain"));
 	deck.add(new Keeper("Bread", "Bread"));
 	deck.add(new Keeper("Chocolate", "Chocolate"));
@@ -107,18 +106,18 @@ public class Deck{
 	deck.add(new NewRule("Get On With It!", "You may choose to discard your entire hand during your turn. You draw 3 new cards. This is a free action, but your turn ends immediately."));
 	deck.add(new NewRule("Silver Lining", "Creepers do not prevent you from winning."));
 	deck.add(new NewRule("You Also Need a Potato", "If the Radioactive Potato is in play, players must also have it in addition to the current Goal in order to win."));
-	Collections.shuffle(deck);
+	//Collections.shuffle(deck);
     }
     
     public void reshuffle(Discard dis){
-	for(int i = 0; i < dis.size(); i ++){
-	    deck.add(dis.get(i));
-	}
-	Collections.shuffle(deck);
+        for(int i = 0; i < dis.size(); i ++){
+            deck.add(dis.get(i));
+        }
+        Collections.shuffle(deck);
     }
 
     public int size(){
-	return deck.size();
+        return deck.size();
     }
 
     public Card remove(){ //draw 1st card
@@ -126,15 +125,10 @@ public class Deck{
     }
 
     public String toString(){
-	String ret = "";
-	for(int i = 0; i < deck.size(); i ++){
-	    ret += deck.get(i).getName() + "\n";
-	}
-	return ret;
-    }
-
-    public static void main(String[]args){
-	Deck deck = new Deck();
-	System.out.println(deck);
+        String ret = "";
+        for(int i = 0; i < deck.size(); i ++){
+            ret += deck.get(i).getName() + "\n";
+        }
+        return ret;
     }
 }

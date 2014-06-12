@@ -71,7 +71,6 @@ public class Table{
     }
     */
 
-
     public static void main(String[]args){
         Table table = new Table();
         Deck dec = new Deck();

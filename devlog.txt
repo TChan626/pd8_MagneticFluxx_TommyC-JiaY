@@ -35,3 +35,9 @@
   Fixed the cards that were created 
   Created other all other cards 
   Created Goal and Action
+
+06-11-2014
+  Worked out the basic moves that a player is allowed to do(play,discard,draw)
+  Tested the cases and it all seems to work so far
+  Need to think of a good way to implement the newRules, Goals,etc effects
+  -Recovered almost fully from my cold-
