@@ -1,12 +1,20 @@
+Already did
+
 Make Card Class
-Make Deck and Discard Pile Queues
+Make Deck and Discard Pile Queues (could be extended)***********
 Create classes extending Card
 Create drivers or main method to test each subclass
-Create a Hand and a Board
-Create all of the methods to represent different cards
+Create a Hand and a Board (could be extended)*******************
+Create all of the different cards
+
+Still need to do
+
 Coding Keeper effects
 Coding Creeper effects
 Coding the Action cards effects
 Coding the New Rules effects
+
+If there is time
+
 Create GUI
 AI?
