@@ -28,7 +28,7 @@
 06-03-2014
   created the different cards
   tried to finish creating the deck of 100 card
-  but only vreated the keeper, creeper, and actions cards 
+  but only created the keeper, creeper, and actions cards 
   53 more to go
   
 06-04-2014
@@ -41,3 +41,4 @@
   Tested the cases and it all seems to work so far
   Need to think of a good way to implement the newRules, Goals,etc effects
   -Recovered almost fully from my cold-
+  
