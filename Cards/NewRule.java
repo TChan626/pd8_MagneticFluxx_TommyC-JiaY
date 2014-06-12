@@ -8,7 +8,7 @@ public class NewRule extends Card{
 	super(name,effect);
 	this.type = "NewRule";
     }
-
+/*
     public ArrayList<Card> draw(int i, Deck deck){
 	ArrayList<Card> stuff = new ArrayList<Card>(i);
 	for(int d = 0; d < i; d ++){
@@ -17,5 +17,5 @@ public class NewRule extends Card{
 	return stuff;
     }
 
-
+*/
 }

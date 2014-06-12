@@ -20,7 +20,7 @@ public class Deck{
 	deck.add(new Keeper("Money", "Money"));
 	deck.add(new Keeper("Moon", "Moon"));
 	deck.add(new Keeper("Peace", "Peace"));
-		 deck.add(new Keeper("Rocket", "Rocket"));
+	deck.add(new Keeper("Rocket", "Rocket"));
 	deck.add(new Keeper("Sleep", "Sleep"));
 	deck.add(new Keeper("Sun", "Sun"));
 	deck.add(new Keeper("Television", "Television"));
@@ -107,7 +107,7 @@ public class Deck{
 	deck.add(new NewRule("Get On With It!", "You may choose to discard your entire hand during your turn. You draw 3 new cards. This is a free action, but your turn ends immediately."));
 	deck.add(new NewRule("Silver Lining", "Creepers do not prevent you from winning."));
 	deck.add(new NewRule("You Also Need a Potato", "If the Radioactive Potato is in play, players must also have it in addition to the current Goal in order to win."));
-	//Collections.shuffle(deck);
+	Collections.shuffle(deck);
     }
     
     public void reshuffle(Discard dis){
@@ -121,14 +121,14 @@ public class Deck{
 	return deck.size();
     }
 
-    public Card draw(){
-	return deck.remove(0);
+    public Card remove(){ //draw 1st card
+        return deck.remove(0);
     }
 
     public String toString(){
 	String ret = "";
 	for(int i = 0; i < deck.size(); i ++){
-	    ret += deck.get(i).getName() + ",";
+	    ret += deck.get(i).getName() + "\n";
 	}
 	return ret;
     }
