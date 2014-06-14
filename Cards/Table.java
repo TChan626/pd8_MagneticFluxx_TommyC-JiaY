@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Table extends JFrame{
+public class Table { //extends JFrame{
     
     private Deck deck; //deck to draw from
     private Discard discard; //discarded cards (action,goals)
@@ -30,6 +30,7 @@ public class Table extends JFrame{
         deck = new Deck();
         discard = new Discard();
         newRule = new ArrayList<NewRule>();
+        newRule.add(new NewRule("Basic Rules", "Draw 1, Play 1"));
         players = new ArrayList<Player>();
     }
     
@@ -56,7 +57,7 @@ public class Table extends JFrame{
     public String getRule(){
         String str = "";
         for(NewRule r: newRule){
-            str+= r;
+            str += r.getName();
         }
         return str;
     }
@@ -72,12 +73,12 @@ public class Table extends JFrame{
     public String toString(){
         String retStr = "";
         for (int x = 0; x < players.size(); x++){
-            retStr += "player " + x + "has played" + getPlayerPlayed(x);
+            retStr += "player " + x + " has played " + getPlayerPlayed(x) + "\n";
         }
         retStr += "The goal is : " + goal + "\n";
         retStr += "The rules are : ";
         for (int x = 0; x < newRule.size(); x++){
-            retStr += newRule.get(x);
+            retStr += newRule.get(x).getName();
         }
         return retStr;
     }
