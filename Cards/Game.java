@@ -17,6 +17,9 @@ public class Game{
         }
     }
     
+    public void act(){
+    }
+    
     public String toString(){
         return table.toString();
     }
