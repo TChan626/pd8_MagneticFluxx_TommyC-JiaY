@@ -38,8 +38,18 @@ public class Player{
         System.out.println("Here is your hand : " + hand.toString());
         for (int x = 1; x <= discard; x++){
             System.out.println("please select a card to discard:");
-            String d = Keyboard.readWord();    
-            dis.add(hand.remove(d));
+            for (int y = 0; y < hand.size(); y ++){
+                    System.out.println(y + ": " + hand.get(y));
+                }
+            int i = Keyboard.readInt();
+            if ( i < 0 || i > hand.size()-1 ){
+                System.out.println("index out of bound, please select another card to discard:");
+                for (int z = 0; z < hand.size(); z ++){
+                    System.out.println(z+ ": " + hand.get(z));
+                }
+                i = Keyboard.readInt();
+            }            
+            dis.add(hand.remove(i));
         }
     }
     
@@ -47,8 +57,18 @@ public class Player{
         System.out.println("Here is your hand : " + hand.toString());
         for (int x = 1; x <= play; x++){
             System.out.println("please select a card to play:");
-            String p = Keyboard.readWord();
-            playing.add(hand.remove(p));
+                for (int y = 0; y < hand.size(); y ++){
+                    System.out.println(y + ": " + hand.get(y ));
+                }
+            int i = Keyboard.readInt();
+            if ( i < 0 || i > hand.size()-1 ){
+                System.out.println("index out of bound, please select another card to play:");
+                for (int z = 0; z < hand.size(); z ++){
+                    System.out.println(z + ": " + hand.get(z));
+                }
+                i = Keyboard.readInt();
+            }
+            playing.add(hand.remove(i));
         }
     }
     
