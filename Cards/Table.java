@@ -4,24 +4,20 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Table extends JFrame{
-
-    private int numPlays, numDraws;
     
     private Deck deck; //deck to draw from
     private Discard discard; //discarded cards (action,goals)
     private Goal goal;
-    private ArrayList<NewRule> newRules;
+    private ArrayList<NewRule> newRule;
     private ArrayList<Player> players;
-    
+    /*
     //Gui stuff
     JPanel pane = new JPanel();
     JButton instructions = new JButton("Instructions");
     JButton play = new JButton("Play Game!");
-
-    //private boolean playerTurn;
-    
+    */
     public Table(){
-        //Gui stuff
+    /*    //Gui stuff
         super("Fluxx, the Game");
         setBounds(0,0,720,720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,30 +26,11 @@ public class Table extends JFrame{
         pane.add(play);
         pane.add(instructions);
         setVisible(true);
-        
-        numPlays = 1;
-        numDraws = 1;
+    */   
         deck = new Deck();
         discard = new Discard();
-        newRules = new ArrayList<NewRule>();
+        newRule = new ArrayList<NewRule>();
         players = new ArrayList<Player>();
-	
-	// playerTurn = Math.random() > 0.5;
-        // player1 = new Hand();
-        // player2 = new Hand();
-	
-	// for(int i = 0; i < 3; i ++){
-	//    player1.draw(deck);
-	//    player2.draw(deck);
-	// }
-    }
-
-    public void setNumPlays(int i){
-        numPlays = i;
-    }
-
-    public void setNumDraws(int i){
-        numDraws = i;
     }
     
     public Deck getDeck(){
@@ -64,24 +41,49 @@ public class Table extends JFrame{
         return discard;
     }
     
-    public  Goal getGoal(){
-        return goal;
+    public void setGoal(Goal g){
+        goal = g;
     }
     
-    public ArrayList<NewRule> getNewRule(){
-        return newRules;
+    public  String getGoal(){
+        return goal.getName();
     }
-
-    // public Hand getPlayer(boolean player){
-    // 	if(player == true)
-    // 	    return player1;
-    // 	else
-    // 	    return player2;
-    // }
+    
+    public void addRule(NewRule r){
+        newRule.add(r);
+    }
+    
+    public String getRule(){
+        String str = "";
+        for(NewRule r: newRule){
+            str+= r;
+        }
+        return str;
+    }
+    
+    public void addPlayer(Player p){
+        players.add(p);
+    }
+    
+    public ArrayList<Card> getPlayerPlayed(int i){
+        return players.get(i).getPlayed();
+    }
+    
+    public String toString(){
+        String retStr = "";
+        for (int x = 0; x < players.size(); x++){
+            retStr += "player " + x + "has played" + getPlayerPlayed(x);
+        }
+        retStr += "The goal is : " + goal + "\n";
+        retStr += "The rules are : ";
+        for (int x = 0; x < newRule.size(); x++){
+            retStr += newRule.get(x);
+        }
+        return retStr;
+    }
 
     public static void main(String[]args){
         Table table = new Table();
-        //Deck dec = new Deck();
-        //System.out.println(dec.toString());
+        System.out.println(table);
     }
 }
