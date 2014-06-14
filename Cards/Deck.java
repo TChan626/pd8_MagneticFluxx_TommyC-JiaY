@@ -106,7 +106,7 @@ public class Deck{
 	deck.add(new NewRule("Get On With It!", "You may choose to discard your entire hand during your turn. You draw 3 new cards. This is a free action, but your turn ends immediately."));
 	deck.add(new NewRule("Silver Lining", "Creepers do not prevent you from winning."));
 	deck.add(new NewRule("You Also Need a Potato", "If the Radioactive Potato is in play, players must also have it in addition to the current Goal in order to win."));
-	//Collections.shuffle(deck);
+	Collections.shuffle(deck);
     }
     
     public void reshuffle(Discard dis){
@@ -125,10 +125,10 @@ public class Deck{
     }
 
     public String toString(){
-        String ret = "";
-        for(int i = 0; i < deck.size(); i ++){
-            ret += deck.get(i).getName() + "\n";
+        String ret = "" + deck.get(0).getName();
+        for(int i = 1; i < deck.size(); i ++){
+            ret +=", " + deck.get(i).getName();
         }
-        return ret;
+        return ret +  "\n";
     }
 }

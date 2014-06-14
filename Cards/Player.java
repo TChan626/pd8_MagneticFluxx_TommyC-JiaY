@@ -10,6 +10,7 @@ public class Player{
     public Player(){
         hand = new Hand();
         playing = new ArrayList<Card>();
+        draw = play = discard = 1;
     }
     
     public void setDraw(int i) {
@@ -24,14 +25,18 @@ public class Player{
         play = i;
     }
     
-    public void draw(Deck deck){
-        for (int x = 0; x < draw; x++){
+    public void draw(Deck deck, Discard dis){
+        if(deck.size() == 0){
+            deck.reshuffle(dis);
+        }
+        for (int x = 1; x <= draw; x++){
             hand.add(deck.remove());
         }
     }
     
     public void discard(Discard dis){
-        for (int x = 0; x < discard; x++){
+        System.out.println("Here is your hand : " + hand.toString());
+        for (int x = 1; x <= discard; x++){
             System.out.println("please select a card to discard:");
             String d = Keyboard.readWord();    
             dis.add(hand.remove(d));
@@ -39,7 +44,8 @@ public class Player{
     }
     
     public void play(){
-        for (int x = 0; x < play; x++){
+        System.out.println("Here is your hand : " + hand.toString());
+        for (int x = 1; x <= play; x++){
             System.out.println("please select a card to play:");
             String p = Keyboard.readWord();
             playing.add(hand.remove(p));
@@ -50,29 +56,28 @@ public class Player{
         return playing;
     }
     
-    public String playToString(){
-        String ret = "";
-        for (Card c: playing){
-            ret += c.getName() +"\n";
+    public String toString(){
+        String ret = "" + playing.get(0).getName();
+        for(int i = 1; i < playing.size(); i ++){
+            ret += ", " + playing.get(i).getName();
         }
-        return ret;
+        return ret+ "\n";
     }
-    /*
+    
     public static void main(String[]args){
     
         Deck dec = new Deck();
         Discard dis = new Discard();
         Player me = new Player();
-        me.draw(dec);
-        me.draw(dec);
-        me.draw(dec);
-        me.play("Bread");
-        me.discard(dis, "Brain");
+        me.draw(dec,dis);
+        me.draw(dec,dis);
+        me.draw(dec,dis);
+        me.play();
+        me.discard(dis);
         
-        System.out.println("playing\n" + me.playToString());
+        System.out.println("\nplaying\n" + me.toString());
         System.out.println("hand\n" + me.hand.toString());
         System.out.println("dis\n" + dis.toString());
-        System.out.println("dec\n" + dec.toString());
+        //System.out.println("dec\n" + dec.toString());
     }    
-    */
 }

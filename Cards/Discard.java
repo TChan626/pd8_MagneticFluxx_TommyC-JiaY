@@ -21,10 +21,10 @@ public class Discard{
     }
     
     public String toString(){
-        String ret = "";
-        for(int i = 0; i < dis.size(); i ++){
-            ret += dis.get(i).getName() + "\n";
+        String ret = "" + dis.get(0).getName();
+        for(int i = 1; i < dis.size(); i ++){
+            ret += ", " + dis.get(i).getName();
         }
-        return ret;
+        return ret+ "\n";
     }
 }

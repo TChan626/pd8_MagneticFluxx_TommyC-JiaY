@@ -29,11 +29,11 @@ public class Hand{
     }
     
     public String toString(){
-        String ret = "";
-        for(int i = 0; i < hand.size(); i ++){
-            ret += hand.get(i).getName() + "\n";
+        String ret = "" + hand.get(0).getName();
+        for(int i = 1; i < hand.size(); i ++){
+            ret += ", " + hand.get(i).getName();
         }
-        return ret;
+        return ret+ "\n";
     }
     
 }
