@@ -42,3 +42,8 @@
   Need to think of a good way to implement the newRules, Goals,etc effects
   -Recovered almost fully from my cold-
   
+06-14-2014
+  updated the basic moves and allow user to inout what cards they want to play/discard
+  set a counter for amount of times one can draw/play
+  finish setting up the basic of a board
+  

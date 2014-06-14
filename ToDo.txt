@@ -9,6 +9,9 @@ Create all of the different cards
 
 Still need to do
 
+set each card in hand to number value and have player type in the number instead of the card name
+create check methods to ensure that only those card that's in your hand gets played/discarded 
+
 Coding Keeper effects
 Coding Creeper effects
 Coding the Action cards effects
