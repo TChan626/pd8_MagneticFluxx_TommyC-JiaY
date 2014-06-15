@@ -11,10 +11,10 @@ create check methods to ensure that only those card that's in your hand gets pla
 
 Still need to do
 
-Coding Keeper effects
 Coding Creeper effects
 Coding the Action cards effects
 Coding the New Rules effects
+coding the goal effects(conditions)
 
 If there is time
 
