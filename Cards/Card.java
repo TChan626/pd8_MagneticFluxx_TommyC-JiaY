@@ -1,23 +1,26 @@
+import java.awt.*;
+
 public class Card{
 
-    private String name,effect,type;
+    private String name,type;
+    private Image picture;
 
-    public Card(String name, String effect){
-	this.name = name;
-	this.effect = effect;
-	this.type = "";
+    public Card(String name, String type/*, Image picture*/){
+	    this.name = name;
+	    this.type = "";
+    //this.picture = picture;
     }
 
     public String getName(){
-	return name;
-    }
-
-    public String getEffect(){
-	return effect;
+	    return name;
     }
 
     public String getType(){
-	return type;
+	    return type;
+    }
+
+    public Image getPicture(){
+        return picture;
     }
 
 }

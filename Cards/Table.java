@@ -7,8 +7,9 @@ public class Table { //extends JFrame{
     
     private Deck deck; //deck to draw from
     private Discard discard; //discarded cards (action,goals)
-    private Goal goal;
-    private ArrayList<NewRule> newRule;
+    private Card goal;
+    private Card goal2; //for Double Agenda
+    private ArrayList<Card> rules;
     private ArrayList<Player> players;
     /*
     //Gui stuff
@@ -26,11 +27,14 @@ public class Table { //extends JFrame{
         pane.add(play);
         pane.add(instructions);
         setVisible(true);
-    */   
+    */
+        rules = new ArrayList<Card>();
+        goal = null;
+        goal2 = null;
+
+
         deck = new Deck();
         discard = new Discard();
-        newRule = new ArrayList<NewRule>();
-        newRule.add(new NewRule("Basic Rules", "Draw 1, Play 1"));
         players = new ArrayList<Player>();
     }
     
@@ -42,22 +46,38 @@ public class Table { //extends JFrame{
         return discard;
     }
     
-    public void setGoal(Goal g){
+    public void setGoal(Card g){
         goal = g;
+    }
+
+    public void setGoal(Card g, boolean first){
+        boolean isDoubleAgenda = false;
+        for(int i = 0; i < rules.size(); i ++){ //check for double agenda
+            if(rules.get(i).getName().equals("Double Agenda")){
+                isDoubleAgenda = true;
+            }
+        }
+
+        if(isDoubleAgenda) {
+            if (first)
+                goal = g;
+            else
+                goal2 = g;
+        }
     }
     
     public  String getGoal(){
         return goal.getName();
     }
     
-    public void addRule(NewRule r){
-        newRule.add(r);
+    public void addRule(Card r){
+        rules.add(r);
     }
     
     public String getRule(){
         String str = "";
-        for(NewRule r: newRule){
-            str += r.getName();
+        for(Card r: rules){
+            str += r.getName() + ", ";
         }
         return str;
     }
@@ -66,20 +86,16 @@ public class Table { //extends JFrame{
         players.add(p);
     }
     
-    public ArrayList<Card> getPlayerPlayed(int i){
-        return players.get(i).getPlayed();
-    }
-    
     public String toString(){
         String retStr = "";
-        for (int x = 0; x < players.size(); x++){
-            retStr += "player " + x + " has played " + getPlayerPlayed(x) + "\n";
-        }
-        retStr += "The goal is : " + goal + "\n";
-        retStr += "The rules are : ";
-        for (int x = 0; x < newRule.size(); x++){
-            retStr += newRule.get(x).getName();
-        }
+        //for (int x = 0; x < players.size(); x++){
+        //    retStr += "player " + x + " has played " + getPlayerPlayed(x) + "\n";
+        //}
+        //retStr += "The goal is : " + goal + "\n";
+        //retStr += "The rules are : ";
+        //for (int x = 0; x < newRule.size(); x++){
+        //    retStr += newRule.get(x).getName();
+        //}
         return retStr;
     }
 

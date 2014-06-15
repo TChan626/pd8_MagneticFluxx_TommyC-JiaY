@@ -5,15 +5,15 @@ public class Game{
     
     public Game(){
         table = new Table();
-        table.addPlayer(new Player());
-        table.addPlayer(new Player());
+        table.addHand(new Hand());
+        table.addHand(new Hand());
 
     }
     
     public Game(int playerNum){
         table = new Table();
         for (int i = 0; i < playerNum; i++){
-            table.addPlayer(new Player());
+            table.addHand(new Hand());
         }
     }
     
