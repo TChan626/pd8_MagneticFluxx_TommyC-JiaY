@@ -54,7 +54,7 @@ public class Deck{
 	deck.add(new Action("Today's Special", "Set your hand aside. Draw 3 cards. If today is your birthday, play all 3. If today is a holiday, play 2. Otherwise, play only 1."));
 	deck.add(new Action("It's Trash Day", "All players may discard any card from their hand or in play. Shuffle the discard pile back into the Deck."));
 	deck.add(new Goal("10 Cards in Hand", "If at least one player has more than 10 cards in their hand, the player with the most cards in hand wins. In the case of a tie, continue until a clear winner is shown."));
-	deck.add(new Goal("5 Keepers", "If at least one player has more than 5 Keepers in play, the player with the most Keepers in play wins. In the case of a tie, continue until a clear winner is shown."));
+	deck.add(new Goal("5 Keepers", "If at least one player has more than 5 Keepers in their hand, the player with the most Keepers in play wins. In the case of a tie, continue until a clear winner is shown."));
 	deck.add(new Goal("All You Need is Love", "The player with Love wins if they have no other Keepers"));
 	deck.add(new Goal("Appliances", "The player with the TV and the Toaster wins"));
 	deck.add(new Goal("Baked Goods", "The player with Bread and Cookies wins"));

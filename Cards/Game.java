@@ -19,7 +19,32 @@ public class Game{
     
     public void act(){
     }
-    
+    public void deathEffect(Player p, Card card){
+	if(p.get/*stuff in play*/.size() == 1){
+	    //give player option to discard Death
+	    //return if player says yes
+	}
+	if(!card.getType().equals("Keeper") && !card.getType().equals("Creeper")){
+	    return;
+	}
+	if(p.get.hasCard("Death")){
+	    p.discard(table.getDiscard());
+	} 
+    }
+	    
+	
+    public Player warEffect(Player p1, Player p2){
+    	boolean hasPeace = (p1.getHand.hasCard("Peace") != -1);
+    	boolean hasWar = (p1.getHand().hasCard("War") != -1);
+        if(hasPeace == true && hasWar == true){
+    	    p2.add();
+    	    p1.remove(hand.hasCard("War"));
+    	    return p2;
+    	}else{
+    	    return null;
+    	}
+    } 
+
     public String toString(){
         return table.toString();
     }
