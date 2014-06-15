@@ -27,7 +27,7 @@ public class Player{
         return hand.size();
     }
 
-    public int hasCard(String name){
+    public int hasCard(Card name){
 	    for(int i = 0; i < hand.size(); i ++){
 	        if(hand.get(i).getName().equals(name))
 		    return i;
@@ -61,6 +61,21 @@ public class Player{
 
     public void addToHand(Card c){
         hand.add(c);
+    }
+
+    public void givePlayer(Player p2, Card c){
+        boolean hasCard = false;
+        for(int i = 0; i < hand.size(); i ++){
+            if(hand.get(i).equals(c)) {
+                p2.addToHand(c);
+                hand.remove(i);
+                hasCard = true;
+            }
+        }
+
+        if(hasCard == false){
+             System.out.println("Player 1 doesn't have this card");
+        }
     }
     
     public String toString(){

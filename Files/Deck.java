@@ -207,6 +207,8 @@ public class Deck{
         deck.add(INTERSTELLAR);
         deck.add(STARGAZING);
         deck.add(PARTYSNACKS);
+
+
 	    Collections.shuffle(deck);
     }
     
@@ -232,4 +234,402 @@ public class Deck{
         }
         return ret +  "\n";
     }
+
+/*
+
+    //ALL THE ACCESSORS!!!!!!!!1!!
+    public static Card getBrain() {
+        return BRAIN;
+    }
+
+    public static Card getBread() {
+        return BREAD;
+    }
+
+    public static Card getChocolate() {
+        return CHOCOLATE;
+    }
+
+    public static Card getCookies() {
+        return COOKIES;
+    }
+
+    public static Card getCosmos() {
+        return COSMOS;
+    }
+
+    public static Card getDreams() {
+        return DREAMS;
+    }
+
+    public static Card getLove() {
+        return LOVE;
+    }
+
+    public static Card getMilk() {
+        return MILK;
+    }
+
+    public static Card getMoney() {
+        return MONEY;
+    }
+
+    public static Card getMoon() {
+        return MOON;
+    }
+
+    public static Card getPeace() {
+        return PEACE;
+    }
+
+    public static Card getRocket() {
+        return ROCKET;
+    }
+
+    public static Card getSleep() {
+        return SLEEP;
+    }
+
+    public static Card getSun() {
+        return SUN;
+    }
+
+    public static Card getTelevision() {
+        return TELEVISION;
+    }
+
+    public static Card getTime() {
+        return TIME;
+    }
+
+    public static Card getToaster() {
+        return TOASTER;
+    }
+
+    public static Card getEye() {
+        return EYE;
+    }
+
+    public static Card getParty() {
+        return PARTY;
+    }
+
+    public static Card getWar() {
+        return WAR;
+    }
+
+    public static Card getDeath() {
+        return DEATH;
+    }
+
+    public static Card getTaxes() {
+        return TAXES;
+    }
+
+    public static Card getPotato() {
+        return POTATO;
+    }
+
+    public static Card getJackpot() {
+        return JACKPOT;
+    }
+
+    public static Card getDiscardanddraw() {
+        return DISCARDANDDRAW;
+    }
+
+    public static Card getDraw2use2() {
+        return DRAW2USE2;
+    }
+
+    public static Card getDraw3use2() {
+        return DRAW3USE2;
+    }
+
+    public static Card getEvery1() {
+        return EVERY1;
+    }
+
+    public static Card getExchange() {
+        return EXCHANGE;
+    }
+
+    public static Card getDoagain() {
+        return DOAGAIN;
+    }
+
+    public static Card getSimplify() {
+        return SIMPLIFY;
+    }
+
+    public static Card getNolimits() {
+        return NOLIMITS;
+    }
+
+    public static Card getRotate() {
+        return ROTATE;
+    }
+
+    public static Card getReset() {
+        return RESET;
+    }
+
+    public static Card getTurn2() {
+        return TURN2;
+    }
+
+    public static Card getTaxation() {
+        return TAXATION;
+    }
+
+    public static Card getTradehands() {
+        return TRADEHANDS;
+    }
+
+    public static Card getTrashnr() {
+        return TRASHNR;
+    }
+
+    public static Card getUsetake() {
+        return USETAKE;
+    }
+
+    public static Card getSweeper() {
+        return SWEEPER;
+    }
+
+    public static Card getTrashsomething() {
+        return TRASHSOMETHING;
+    }
+
+    public static Card getStealsomething() {
+        return STEALSOMETHING;
+    }
+
+    public static Card getMix() {
+        return MIX;
+    }
+
+    public static Card getToday() {
+        return TODAY;
+    }
+
+    public static Card getTrashday() {
+        return TRASHDAY;
+    }
+
+    public static Card getDraw2() {
+        return DRAW2;
+    }
+
+    public static Card getDraw3() {
+        return DRAW3;
+    }
+
+    public static Card getDraw4() {
+        return DRAW4;
+    }
+
+    public static Card getDraw5() {
+        return DRAW5;
+    }
+
+    public static Card getPlay2() {
+        return PLAY2;
+    }
+
+    public static Card getPlay3() {
+        return PLAY3;
+    }
+
+    public static Card getPlay4() {
+        return PLAY4;
+    }
+
+    public static Card getPlayall() {
+        return PLAYALL;
+    }
+
+    public static Card getHl0() {
+        return HL0;
+    }
+
+    public static Card getHl1() {
+        return HL1;
+    }
+
+    public static Card getHl2() {
+        return HL2;
+    }
+
+    public static Card getKl2() {
+        return KL2;
+    }
+
+    public static Card getKl3() {
+        return KL3;
+    }
+
+    public static Card getKl4() {
+        return KL4;
+    }
+
+    public static Card getDoubleAgenda() {
+        return DOUBLEAGENDA;
+    }
+
+    public static Card getFPRandom() {
+        return FPRANDOM;
+    }
+
+    public static Card getNoHand() {
+        return NOHAND;
+    }
+
+    public static Card getPoor() {
+        return POOR;
+    }
+
+    public static Card getRich() {
+        return RICH;
+    }
+
+    public static Card getInflation() {
+        return INFLATION;
+    }
+
+    public static Card getPartyBonus() {
+        return PARTYBONUS;
+    }
+
+    public static Card getGetOnWithIt() {
+        return GETONWITHIT;
+    }
+
+    public static Card getSilver() {
+        return SILVER;
+    }
+
+    public static Card getNeedPotato() {
+        return NEEDPOTATO;
+    }
+
+    public static Card getTenCards() {
+        return TENCARDS;
+    }
+
+    public static Card getFiveKeepers() {
+        return FIVEKEEPERS;
+    }
+
+    public static Card getAllLove() {
+        return ALLLOVE;
+    }
+
+    public static Card getAppliances() {
+        return APPLIANCES;
+    }
+
+    public static Card getBaked() {
+        return BAKED;
+    }
+
+    public static Card getBedTime() {
+        return BEDTIME;
+    }
+
+    public static Card getBrainNoTV() {
+        return BRAINNOTV;
+    }
+
+    public static Card getChocolateCookies() {
+        return CHOCOLATECOOKIES;
+    }
+
+    public static Card getChocolateMilk() {
+        return CHOCOLATEMILK;
+    }
+
+    public static Card getDeathByChocolate() {
+        return DEATHBYCHOCOLATE;
+    }
+
+    public static Card getDreamland() {
+        return DREAMLAND;
+    }
+
+    public static Card getHeartsAndMinds() {
+        return HEARTSANDMINDS;
+    }
+
+    public static Card getHippyism() {
+        return HIPPYISM;
+    }
+
+    public static Card getMilkAndCookies() {
+        return MILKANDCOOKIES;
+    }
+
+    public static Card getNightAndDay() {
+        return NIGHTANDDAY;
+    }
+
+    public static Card getPeaceNoWar() {
+        return PEACENOWAR;
+    }
+
+    public static Card getRocketScience() {
+        return ROCKETSCIENCE;
+    }
+
+    public static Card getRocketToMoon() {
+        return ROCKETTOMOON;
+    }
+
+    public static Card getSquishyChocolate() {
+        return SQUISHYCHOCOLATE;
+    }
+
+    public static Card getTimeIsMoney() {
+        return TIMEISMONEY;
+    }
+
+    public static Card getToast() {
+        return TOAST;
+    }
+
+    public static Card getWarDeath() {
+        return WARDEATH;
+    }
+
+    public static Card getWinninglottery() {
+        return WINNINGLOTTERY;
+    }
+
+    public static Card getMindsEye() {
+        return MINDSEYE;
+    }
+
+    public static Card getDough() {
+        return DOUGH;
+    }
+
+    public static Card getAllCertain() {
+        return ALLCERTAIN;
+    }
+
+    public static Card getInterstellar() {
+        return INTERSTELLAR;
+    }
+
+    public static Card getStarGazing() {
+        return STARGAZING;
+    }
+
+    public static Card getPartySnacks() {
+        return PARTYSNACKS;
+    }
+*/
+
+
 }
