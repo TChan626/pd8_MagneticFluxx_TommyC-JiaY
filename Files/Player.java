@@ -13,12 +13,6 @@ public class Player{
         remainingPlays = 1;
     }
 
-    public Player(int i){
-        hand = new ArrayList<Card>();
-        onTable = new ArrayList<Card>();
-        remainingPlays = i;
-    }
-
     public String get(int i){
         return hand.get(i).getName();
     }
@@ -33,7 +27,7 @@ public class Player{
 		    return i;
 	    }
 	    return -1;
-    }
+    } //search through AL for card; returns index of card or -1 if not there
 
     public ArrayList<Card> getHand(){
         return hand;
@@ -43,27 +37,52 @@ public class Player{
         return remainingPlays;
     }
 
+    public void addRemainingPlays(int i){
+        remainingPlays += i;
+    }
+
     public ArrayList<Card> getOnTable(){
         return onTable;
     }
 
     public void draw(Deck d){
         addToHand(d.remove());
-    }
+    } //draw a card
+
+    public void draw(Deck d, int times){
+        for(int i = 0; i < times; i ++){
+            draw(d);
+        }
+    } //draw times cards
 
     public void discard(Discard dis, int i){
         dis.add(hand.remove(i));
-    }
+    } //discard an index of hand
+
+    public void discard(Discard dis, Card c){
+        int index = -1;
+        for( int i = 0; i < hand.size(); i ++){
+            if(hand.get(i).equals(c)){
+                index = i;
+                break;
+            }
+        }
+        discard(dis, index);
+    } //discard a card
 
     public Card remove(int i){
         return hand.remove(i);
-    }
+    } //remove a card from hand
 
     public void addToHand(Card c){
         hand.add(c);
+    } //take a card from a source
+
+    public void addToTable(Card c){
+        onTable.add(c);
     }
 
-    public void givePlayer(Player p2, Card c){
+    public void givePlayerCard(Player p2, Card c){
         boolean hasCard = false;
         for(int i = 0; i < hand.size(); i ++){
             if(hand.get(i).equals(c)) {
@@ -74,9 +93,24 @@ public class Player{
         }
 
         if(hasCard == false){
-             System.out.println("Player 1 doesn't have this card");
+             System.out.println("Player doesn't have this card");
         }
-    }
+    } //give another player a card
+
+    public void givePlayerTable(Player p2, Card c){
+        boolean hasCard = false;
+        for(int i = 0; i < hand.size(); i ++){
+            if(hand.get(i).equals(c)){
+                p2.addToTable(c);
+                onTable.remove(i);
+                hasCard = true;
+            }
+        }
+
+        if(hasCard == false){
+            System.out.println("Player doesn't have this card");
+        }
+    } //give another player something on the table
     
     public String toString(){
         String ret = "" + hand.get(0).getName();

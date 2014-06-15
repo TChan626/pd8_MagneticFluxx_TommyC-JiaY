@@ -2,6 +2,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,6 +21,8 @@ public class Table extends JFrame{ //extends JFrame{
     private Card goal2; //for Double Agenda
     private ArrayList<Card> rules;
     private ArrayList<Player> players;
+
+    private boolean inflation;
 
 
     String eol = System.getProperty("line.separator"); //in order to differentiate for different OSes
@@ -59,7 +62,7 @@ public class Table extends JFrame{ //extends JFrame{
         rules = new ArrayList<Card>();
         goal = null;
         goal2 = null;
-
+        inflation = false;
 
         deck = new Deck();
         discard = new Discard();
@@ -70,36 +73,68 @@ public class Table extends JFrame{ //extends JFrame{
         return deck;
     }
 
+    public  String getGoal(){
+        return goal.getName();
+    }
+
+    public String getRules(){
+        String str = "";
+        for(Card r: rules){
+            str += r.getName() + ", ";
+        }
+        return str;
+    }
+
     public Discard getDiscard(){
         return discard;
     }
-    
-    public void setGoal(Card g){
-        goal = g;
+
+    public void addRule(Card r){
+        rules.add(r);
     }
+
+    public void addPlayer(Player p){
+        players.add(p);
+    }
+
+    public void setGoal(Card g) {
+        if (g.getType().equals("Goal"))
+            goal = g;
+        else
+            throw new IllegalArgumentException("The Card must be a Goal");
+    } //change Goal
 
     public void setGoal(Card g, boolean first){ //Double Agenda
-        boolean isDoubleAgenda = false;
-        for(int i = 0; i < rules.size(); i ++){ //check for double agenda
-            if(rules.get(i).getName().equals(deck.DOUBLEAGENDA)){
-                isDoubleAgenda = true;
-            }
-        }
+        if(g.getType().equals("Goal")) {
 
-        if(isDoubleAgenda) {
-            if (first)
-                goal = g;
-            else
-                goal2 = g;
-        }
-    }
+            boolean isDoubleAgenda = false;
+            for (int i = 0; i < rules.size(); i++) { //check for double agenda
+                if (rules.get(i).getName().equals(deck.DOUBLEAGENDA)) {
+                    isDoubleAgenda = true;
+                }
+            }
+
+            if (isDoubleAgenda) {
+                if (first)
+                    goal = g;
+                else
+                    goal2 = g;
+            }
+        }else
+            throw new IllegalArgumentException("The Card must be a Goal");
+    } //Double Agenda
+
+
+
+
 
     public void warEffect(Player p1, Player p2){
         boolean hasPeace = (p1.hasCard(deck.PEACE) != -1);
         boolean hasWar = (p1.hasCard(deck.WAR) != -1);
 
         if(hasPeace == true && hasWar == true){
-            p1.givePlayer(p2, deck.WAR);
+            JOptionPane.showMessageDialog(this, "Because you're Peaceful, you give War to someone else.", "World Peace", JOptionPane.INFORMATION_MESSAGE);
+            p1.givePlayerTable(p2, deck.WAR);
         }
     }
 
@@ -114,50 +149,216 @@ public class Table extends JFrame{ //extends JFrame{
     }
 
     public void potatoEffect(Player p1, Player p2){
-        p1.givePlayer(p2, deck.POTATO);
+        p1.givePlayerTable(p2, deck.POTATO);
     }
 
     public void deathEffect(Player p, Card c){
         if(p.getOnTable().size() == 1) {
             int n = JOptionPane.showConfirmDialog(this, "Would you like to discard Death?", "Death Beckons", JOptionPane.YES_NO_OPTION);
+            if(n == JOptionPane.YES_OPTION)
+                p.discard(discard, c);
         }else{
-            Card[]possibilities = new Card[p.size() - 1];
+            ArrayList<Card> possibilities1 = new ArrayList<Card>(p.size() - 1);
             for(int i = 0; i < p.size(); i ++){
-                if(p.hasCard(deck.DEATH) != -1)
-                    possibilities[i] = p.getHand().get(i);
-                
-            }
-            ArrayList<Card> possibilities = new ArrayList<Card>(p.size() - 1);
-            for(int i = 0; i < p.size(); i ++){
-                if(p.hasCard(deck.DEATH) != i){
-                    possibilities.add(p.getHand().get(i));
+                if(p.hasCard(deck.DEATH) != -1){
+                    possibilities1.add(p.getHand().get(i));
                 }
             }
 
-            String s = (String)JOptionPane.showInputDialog(this, "Which card would you like to discard?", "Death Beckons", JOptionPane.PLAIN_MESSAGE, null, possibilities, possibilities.get(0));
+            Card[]possibilities = new Card[p.size() - 1];
+            for(int i = 0; i < possibilities1.size(); i ++){
+                possibilities[i] = possibilities1.get(i);
+
+            }
+
+            Card ca = (Card)JOptionPane.showInputDialog(this, "Which card would you like to discard?", "Death Beckons", JOptionPane.INFORMATION_MESSAGE, null, possibilities, possibilities[0]);
+
+            p.discard(discard, ca);
         }
     }
-    
-    public  String getGoal(){
-        return goal.getName();
-    }
-    
-    public void addRule(Card r){
-        rules.add(r);
-    }
-    
-    public String getRules(){
-        String str = "";
-        for(Card r: rules){
-            str += r.getName() + ", ";
+
+
+    public void play(Card c){
+        if(c.getType().equals("Action")) {
+
         }
-        return str;
+        if(c.getType().equals("NewRule")){
+
+        }
     }
-    
-    public void addPlayer(Player p){
-        players.add(p);
+
+
+    public void jackpot(Player p){
+        p.discard(discard, deck.JACKPOT);
+        if(inflation)
+            p.draw(deck, 4);
+        else
+            p.draw(deck, 3);
     }
-    
+
+    public void discardAndDraw(Player p){
+        p.discard(discard, deck.DISCARDANDDRAW);
+        int cards = p.size();
+        while(p.size() > 0){
+            p.discard(discard, 0);
+        }
+        p.draw(deck, cards);
+
+    }
+
+    public void drawTwoUseEm(Player p){
+        p.discard(discard, deck.DRAW2USE2);
+        ArrayList<Card> setAside = p.getHand();
+
+        for(int i = 0; i < p.size(); i ++){
+            setAside.add(p.remove(0));
+        }
+
+        if(inflation == true){
+            p.draw(deck, 3);
+            p.addRemainingPlays(3);
+        }else{
+            p.draw(deck, 2);
+            p.addRemainingPlays(2);
+        }
+
+        while(setAside.size() > 0) {
+            p.addToHand(setAside.remove(0));
+        }
+    }
+
+    public void drawThreeUseTwo(Player p, Card c){
+        p.discard(discard, deck.DRAW3USE2);
+        ArrayList<Card> setAside = p.getHand();
+
+        for(int i = 0; i < p.size(); i ++){
+            setAside.add(p.remove(0));
+        }
+
+        if(inflation == true){
+            p.draw(deck, 4);
+            p.addRemainingPlays(3);
+            p.discard(discard,c);
+        }else{
+            p.draw(deck, 3);
+            p.addRemainingPlays(2);
+            p.discard(discard,c);
+        }
+
+        while(setAside.size() > 0){
+            p.addToHand(setAside.remove(0));
+        }
+    }
+
+    public void everybodyGetsOne(Player p, Player p2, boolean first){
+        p.discard(discard, deck.EVERY1);
+        int num = players.size();
+
+        ArrayList<Card> setAside = p.getHand();
+        for(int i = 0; i < p.size(); i ++){
+            setAside.add(p.remove(0));
+        }
+
+        p.draw(deck, num);
+
+        for(int i = 0; i < num; i ++) {
+            if (first) {
+                p.givePlayerCard(p2, p.remove(0));
+                while (setAside.size() > 0) {
+                    p.addToHand(setAside.remove(0));
+                }
+            } else{
+                p.givePlayerCard(p2, p.remove(1));
+                while (setAside.size() > 0) {
+                    p.addToHand(setAside.remove(0));
+                }
+            }
+        }
+    }
+
+    public void exchangeKeepers(Player p1, Player p2, Card c1, Card c2){
+        p1.discard(discard, deck.EXCHANGE);
+        if(c1.getType() != "Keeper" || c2.getType() != "Keeper" || p1.hasCard(c1) == -1 || p2.hasCard(c2) == -1){
+            return;
+        }
+        p1.givePlayerTable(p2, c1);
+        p2.givePlayerTable(p1, c2);
+    }
+
+    public void letsDoThatAgain(Discard discard, Player player){
+        player.discard(discard, deck.DOAGAIN);
+        int num = 0;
+        Card[] available;
+        for(int i = 0; i < discard.size(); i ++){
+            if(discard.get(i).getType() == "New Rule" || discard.get(i).getType() == "Action")
+                num ++;
+        }
+
+        available = new Card[num];
+        int b = 0;
+        for(int a = 0; a < discard.size(); a ++){
+            if(discard.get(a).getType() == "New Rule" || discard.get(a).getType() == "Action") {
+                available[b] = discard.get(a);
+                b++;
+            }
+        }
+
+        Card c = (Card)JOptionPane.showInputDialog(this, "Which card would you like to use again?",
+                                                    "Let's Do That Again!", JOptionPane.PLAIN_MESSAGE, null,
+                                                    available, available[0]);
+        play(c);
+    }
+
+    public void letsSimplify(Player p){
+        p.discard(discard, deck.SIMPLIFY);
+        int half = 0;
+        if(rules.size() % 2 == 0)
+            half = rules.size() / 2;
+        else
+            half = rules.size() / 2 + 1;
+
+        for(int i = 0; i < half; i ++){
+
+        }
+    }
+
+    public void noLimits(Player p) {
+        p.discard(discard, deck.NOLIMITS);
+        for (int i = 0; i < rules.size(); i++) {
+            if (rules.get(i).equals(deck.HL0) || rules.get(i).equals(deck.HL1) || rules.get(i).equals(deck.HL2) ||
+                    rules.get(i).equals(deck.KL2) || rules.get(i).equals(deck.KL3) || rules.get(i).equals(deck.KL4)) {
+                rules.remove(i);
+                i--;
+            }
+        }
+    }
+
+    private void swapArrayList(ArrayList<Card> list1, ArrayList<Card> list2){
+        ArrayList<Card> temp = list1;
+        list1 = list2;
+        list1 = temp;
+    } //helper for rotateHands
+
+    public void rotateHands(boolean right, int numPlayers, Player p){
+        p.discard(discard, deck.ROTATE);
+        if(numPlayers == 2){
+            swapArrayList(players.get(0).getHand(), players.get(1).getHand());
+            return;
+        }
+
+        if(right) {
+            for (int i = 0; i < numPlayers - 1; i++) {
+                swapArrayList(players.get(i).getHand(), players.get(i + 1).getHand());
+            }
+            swapArrayList(players.get(numPlayers - 1).getHand(), players.get(0).getHand());
+        }else{
+            for(int i = 0; i < numPlayers - 1; i ++){
+                swapArrayList(players.get(i + 1).getHand(), players.get(i).getHand());
+            }
+            swapArrayList(players.get(0).getHand(), players.get(numPlayers - 1).getHand());
+        }
+    }
+
     public String toString(){
         String retStr = "";
         return retStr;
