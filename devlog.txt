@@ -47,6 +47,17 @@
   set a counter for amount of times one can draw/play
   finish setting up the basic of a board
   
-06-14-2014
+06-14-2014 (morning)
   fixed the play and discard to ensure that a player only plays/discards what he has in his hand
   change play/discard to read in an index for a card instead of card name
+  
+06-14-2014 (afternoon and on)
+  decided on making the GUI
+  restructure the coded
+  got rided of the different subclass for card
+  combined player and hand
+  combined deck and discard
+  created pics for each card to used in the GUI
+  have to recrete UML diagram
+  
+
