@@ -151,8 +151,6 @@ public class Deck{
         deck.add(TRASHSOMETHING);
         deck.add(STEALSOMETHING);
         deck.add(MIX);
-        deck.add(TODAY);
-        deck.add(TRASHDAY);
         deck.add(DRAW2);
         deck.add(DRAW3);
         deck.add(DRAW4);

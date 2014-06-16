@@ -1,4 +1,6 @@
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Collections;
+import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JLabel;
@@ -14,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class Table extends JFrame{ //extends JFrame{
+public class Table extends JFrame implements ActionListener{ //extends JFrame{
     
     private Deck deck; //deck to draw from
     private Discard discard; //discarded cards (action,goals)
@@ -38,7 +41,8 @@ public class Table extends JFrame{ //extends JFrame{
 
     String eol = System.getProperty("line.separator"); //in order to differentiate for different OSes
     //Gui stuff
-    JPanel pane = new JPanel();
+    JPanel pane;
+    
     JTextArea instructions = new JTextArea(
             "How to Play:" + eol + eol + eol +
                     "Fluxx is a game with one basic rule: Draw 1, Play 1." + eol + eol +
@@ -48,28 +52,38 @@ public class Table extends JFrame{ //extends JFrame{
                     "Discard down to the current Hand Limit (if any) and Keeper Limit (if any)." + eol + eol +
                     "The game will continue until one player meets the conditions of the current Goal."
     );
-    JButton playButton = new JButton("Play Game!");
+    //JButton playButton = new JButton("Play Game!");
+
+    JButton playGame = new JButton("Play Game!");
+    
 
     public Table(){
         //Gui stuff
         super("Fluxx, the Game");
         setBounds(0,0,720,720);
-        //try {
-            //File title = new File("./Card Images/_CARD BACK.jpg");
-            //BufferedImage introPic = ImageIO.read(title);
-            //JLabel label = new JLabel(new ImageIcon(introPic));
-            Container container = this.getContentPane();
-            container.setBackground(Color.WHITE);
-            container.add(new JLabel(new ImageIcon("./Card Images/_CARD BACK.jpg")));
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            container.add(pane);
-            pane.add(instructions);
-            pane.add(playButton);
-            setVisible(true);
-        //}catch(IOException e){
-        //    System.out.println("Error 404: File not found");
-        //}
+        JPanel pane = new JPanel();
+            
+        Container container = this.getContentPane();
+        container.setBackground(Color.WHITE);
+        ImageIcon image = new ImageIcon("Card Images/_CARD BACK.jpg");
+        JLabel j = new JLabel(" ", image, JLabel.CENTER);
+            
+        pane.add(j);
+            
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        container.add(pane);
+        pane.add(instructions);
+        //pane.add(playButton);
 
+        playGame.addActionListener(this);
+
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+        southPanel.add(instructions);
+        southPanel.add(playGame);
+        pane.add(BorderLayout.SOUTH, southPanel );
+
+        setVisible(true);
         rules = new ArrayList<Card>();
         goal = null;
         goal2 = null;
@@ -79,6 +93,10 @@ public class Table extends JFrame{ //extends JFrame{
         deck = new Deck();
         discard = new Discard();
         players = new ArrayList<Player>();
+    }
+
+    public void actionPerformed(ActionEvent e){
+
     }
     
     public Deck getDeck(){
@@ -324,7 +342,7 @@ public class Table extends JFrame{ //extends JFrame{
         Card c = (Card)JOptionPane.showInputDialog(this, "Which card would you like to use again?",
                                                     "Let's Do That Again!", JOptionPane.PLAIN_MESSAGE, null,
                                                     available, available[0]);
-        p1.play(c);
+        player.play(c);
     }
 
     public void letsSimplify(Player p){
@@ -445,8 +463,8 @@ public class Table extends JFrame{ //extends JFrame{
         p1.discard(discard, deck.SWEEPER);
 
         for(int i = 0; i < players.size(); i ++){
-            if(players.get(i).hasCard(deck.WAR) || players.get(i).hasCard(deck.DEATH) ||
-               players.get(i).hasCard(deck.TAXES) || players.get(i).hasCard(deck.POTATO)){
+            if(players.get(i).hasCard(deck.WAR) == -1 || players.get(i).hasCard(deck.DEATH) == -1 ||
+               players.get(i).hasCard(deck.TAXES) == -1 || players.get(i).hasCard(deck.POTATO) == -1){
                 players.get(i).getOnTable().remove(deck.WAR);
                 players.get(i).getOnTable().remove(deck.POTATO);
                 players.get(i).getOnTable().remove(deck.DEATH);
@@ -458,12 +476,12 @@ public class Table extends JFrame{ //extends JFrame{
     public void trashSomething(Player p1, Player p2) {
         p1.discard(discard, deck.TRASHSOMETHING);
         ArrayList<Card> stuff = new ArrayList<Card>();
-        for (int i = 0; i < p1.onTable().size(); i++) {
-            stuff.add(p1.onTable().get(i));
+        for (int i = 0; i < p1.getOnTable().size(); i++) {
+            stuff.add(p1.getOnTable().get(i));
         }
 
-        for (int i = 0; i < p2.onTable().size(); i++) {
-            stuff.add(p2.onTable().get(i));
+        for (int i = 0; i < p2.getOnTable().size(); i++) {
+            stuff.add(p2.getOnTable().get(i));
         }
 
         Card[] options = new Card[stuff.size()];
@@ -481,22 +499,22 @@ public class Table extends JFrame{ //extends JFrame{
 
     public void stealSomething(Player p1, Player p2){
         p1.discard(discard, deck.STEALSOMETHING);
-        Card[]options = p2.onTable().size();
+        Card[]options = new Card[p2.getOnTable().size()];
 
-        for(int i = 0; i < p2.onTable().size(); i ++) {
-            options[i] = p2.onTable().get(i);
+        for(int i = 0; i < p2.getOnTable().size(); i ++) {
+            options[i] = p2.getOnTable().get(i);
         }
 
         Card c = (Card)JOptionPane.showInputDialog(this, "Choose a card to steal:", "Steal Something",
                                                     JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-        p1.onTable().add(p2.onTable().remove(c));
+        p2.givePlayerTable(p1, c);
     }
 
     public void mixItAllUp(Player p){
         p.discard(discard, deck.MIX);
         ArrayList<Card> mixer = new ArrayList<Card>();
         for(int i = 0; i < players.size(); i ++){
-            for(int a = 0; a < players.get(i).getOnTable(); a ++){
+            for(int a = 0; a < players.get(i).getOnTable().size(); a ++){
                 mixer.add(players.get(i).getOnTable().remove(a));
             }
         }
@@ -514,50 +532,50 @@ public class Table extends JFrame{ //extends JFrame{
 
     public void draw2(Player p){
         rules.add(p.remove(deck.DRAW2));
-        prevDraw = draw;
+        int prevDraw = draw;
         if(inflation) {
             draw = 3;
         }else {
             draw = 2;
         }
         if(prevDraw < draw){
-            p.draw(draw - prevDraw);
+            p.draw(deck, draw - prevDraw);
         }
     }
     public void draw3(Player p){
         rules.add(p.remove(deck.DRAW3));
-        prevDraw = draw;
+        int prevDraw = draw;
         if(inflation) {
             draw = 4;
         }else {
             draw = 3;
         }
         if(prevDraw < draw){
-            p.draw(draw - prevDraw);
+            p.draw(deck, draw - prevDraw);
         }
     }
     public void draw4(Player p){
         rules.add(p.remove(deck.DRAW4));
-        prevDraw = draw;
+        int prevDraw = draw;
         if(inflation) {
             draw = 5;
         }else {
             draw = 4;
         }
         if(prevDraw < draw){
-            p.draw(draw - prevDraw);
+            p.draw(deck, draw - prevDraw);
         }
     }
     public void draw5(Player p){
         rules.add(p.remove(deck.DRAW5));
-        prevDraw = draw;
+        int prevDraw = draw;
         if(inflation) {
             draw = 6;
         }else {
             draw = 5;
         }
         if(prevDraw < draw){
-            p.draw(draw - prevDraw);
+            p.draw(deck, draw - prevDraw);
         }
     }
 
@@ -623,10 +641,258 @@ public class Table extends JFrame{ //extends JFrame{
         rules.add(p.remove(deck.NEEDPOTATO));
     }
 
+    public void goalChecker(){
 
+        if(goal.equals(deck.ALLLOVE) || goal2.equals(deck.ALLLOVE)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.LOVE) && players.get(i).getOnTable().size() == 1 ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
 
-    public void tenCards(Player p){
-        
+        }
+        if(goal.equals(deck.APPLIANCES) || goal2.equals(deck.APPLIANCES)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.TOASTER) && players.get(i).getOnTable().contains(deck.TELEVISION)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                            !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false)){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+        }
+        if(goal.equals(deck.BAKED) || goal2.equals(deck.BAKED)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.COOKIES) && players.get(i).getOnTable().contains(deck.BREAD)
+                && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false)){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.BEDTIME) || goal2.equals(deck.BEDTIME)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.SLEEP) && players.get(i).getOnTable().contains(deck.DREAMS)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.CHOCOLATECOOKIES) || goal2.equals(deck.CHOCOLATECOOKIES)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.CHOCOLATE) && players.get(i).getOnTable().contains(deck.COOKIES)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.CHOCOLATEMILK) || goal2.equals(deck.CHOCOLATEMILK)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.CHOCOLATE) && players.get(i).getOnTable().contains(deck.MILK)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.DEATHBYCHOCOLATE) || goal2.equals(deck.DEATHBYCHOCOLATE)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.DEATH) && players.get(i).getOnTable().contains(deck.CHOCOLATE)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.DREAMLAND) || goal2.equals(deck.DREAMLAND)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.DREAMS) && players.get(i).getOnTable().contains(deck.COSMOS)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.HEARTSANDMINDS) || goal2.equals(deck.HEARTSANDMINDS)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.LOVE) && players.get(i).getOnTable().contains(deck.BRAIN)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.HIPPYISM) || goal2.equals(deck.HIPPYISM)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.LOVE) && players.get(i).getOnTable().contains(deck.PEACE)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.MILKANDCOOKIES) || goal2.equals(deck.MILKANDCOOKIES)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.MILK) && players.get(i).getOnTable().contains(deck.COOKIES)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.NIGHTANDDAY) || goal2.equals(deck.NIGHTANDDAY)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.MOON) && players.get(i).getOnTable().contains(deck.SUN)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.ROCKETTOMOON) || goal2.equals(deck.ROCKETTOMOON)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.ROCKET) && players.get(i).getOnTable().contains(deck.MOON)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.SQUISHYCHOCOLATE) || goal2.equals(deck.SQUISHYCHOCOLATE)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.SUN) && players.get(i).getOnTable().contains(deck.CHOCOLATE)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.TIMEISMONEY) || goal2.equals(deck.TIMEISMONEY)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.TIME) && players.get(i).getOnTable().contains(deck.MONEY)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.TOAST) || goal2.equals(deck.TOAST)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.BREAD) && players.get(i).getOnTable().contains(deck.TOASTER)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.WARDEATH) || goal2.equals(deck.WARDEATH)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.WAR) && players.get(i).getOnTable().contains(deck.DEATH)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.MINDSEYE) || goal2.equals(deck.MINDSEYE)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.EYE) && players.get(i).getOnTable().contains(deck.BRAIN)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.DOUGH) || goal2.equals(deck.DOUGH)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.MONEY) && players.get(i).getOnTable().contains(deck.BREAD)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.ALLCERTAIN) || goal2.equals(deck.ALLCERTAIN)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.TAXES) && players.get(i).getOnTable().contains(deck.DEATH)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.INTERSTELLAR) || goal2.equals(deck.INTERSTELLAR)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.ROCKET) && players.get(i).getOnTable().contains(deck.COSMOS)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.STARGAZING) || goal2.equals(deck.STARGAZING)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.EYE) && players.get(i).getOnTable().contains(deck.COSMOS)
+                        && ((!players.get(i).getOnTable().contains(deck.WAR) || !players.get(i).getOnTable().contains(deck.DEATH) ||
+                        !players.get(i).getOnTable().contains(deck.POTATO) || !players.get(i).getOnTable().contains(deck.TAXES)) && silverLining == false) ){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+        if(goal.equals(deck.PARTYSNACKS) || goal2.equals(deck.PARTYSNACKS)){
+            for(int i = 0; i < players.size(); i ++){
+                if(players.get(i).getOnTable().contains(deck.PARTY) && (players.get(i).getOnTable().contains(deck.COOKIES) || players.get(i).getOnTable().contains(deck.CHOCOLATE) || players.get(i).getOnTable().contains(deck.BREAD)) &&
+                        (!players.get(i).getOnTable().contains(deck.WAR) && !players.get(i).getOnTable().contains(deck.TAXES) && !players.get(i).getOnTable().contains(deck.POTATO) && !players.get(i).getOnTable().contains(deck.DEATH) && silverLining == false)){
+                    JOptionPane.showMessageDialog(this, "Player " + (i + 1 + " wins!"));
+                    System.exit(0);
+                }
+            }
+
+        }
+
     }
 
 
