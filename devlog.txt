@@ -63,5 +63,5 @@
 
 6-16-2014
   SOO MANY METHODSSSSSS
-  Polished, made GUI, made it workable
+  GUI, intro page with instructions
   
