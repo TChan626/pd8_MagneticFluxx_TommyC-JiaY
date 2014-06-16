@@ -86,7 +86,7 @@ public class Player{
     }
 
     public void discardFromTable(Discard dis, Card c){
-        for(int i = 0; i < onTable; i ++){
+        for(int i = 0; i < onTable.size(); i ++){
             if(onTable.get(i).equals(c)){
                 dis.add(onTable.remove(i));
                 break;
