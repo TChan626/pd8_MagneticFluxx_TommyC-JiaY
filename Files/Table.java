@@ -31,14 +31,15 @@ public class Table extends JFrame{ //extends JFrame{
     JPanel pane;
     
     JTextArea instructions = new JTextArea(
-            "How to Play:" + eol + eol + eol +
-                    "Fluxx is a game with one basic rule: Draw 1, Play 1." + eol + eol +
-                    "As the game goes on, new Rules can be put into place. These rules will change" + eol +
-                    "how the game plays. There is no Goal of the game until someone plays one." + eol + eol + eol + eol +
-                    "On your turn, draw the number of cards required, play the number of cards required," + eol +
-                    "Discard down to the current Hand Limit (if any) and Keeper Limit (if any)." + eol + eol +
+            "How to Play:" + eol + eol + 
+                    "Fluxx is a game with one basic rule: Draw 1, Play 1." + eol + eol + 
+                    "As the game goes on, new Rules can be put into place. These rules will change" + eol + eol + 
+                    "how the game plays. There is no Goal of the game until someone plays one." + eol + 
+                    "On your turn, draw the number of cards required, play the number of cards required," + eol + eol + 
+                    "Discard down to the current Hand Limit (if any) and Keeper Limit (if any)." + eol + eol + 
                     "The game will continue until one player meets the conditions of the current Goal."
     );
+    
     JButton play = new JButton("Play Game!");   
     
     
@@ -65,8 +66,11 @@ public class Table extends JFrame{ //extends JFrame{
             
             JPanel southPanel = new JPanel();
             southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-            southPanel.add(instructions);
-            southPanel.add(play);
+            southPanel.add(instructions, BorderLayout.CENTER);
+            instructions.setEditable(false); 
+            instructions.setFont(new Font("Serif", Font.ITALIC, 16));
+            instructions.setWrapStyleWord(true);
+            southPanel.add(play, BorderLayout.CENTER);
             pane.add(BorderLayout.SOUTH, southPanel );
             
             setVisible(true);
