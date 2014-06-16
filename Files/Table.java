@@ -6,6 +6,7 @@ import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JLabel;
@@ -27,7 +28,8 @@ public class Table extends JFrame{ //extends JFrame{
 
     String eol = System.getProperty("line.separator"); //in order to differentiate for different OSes
     //Gui stuff
-    JPanel pane = new JPanel();
+    JPanel pane;
+    
     JTextArea instructions = new JTextArea(
             "How to Play:" + eol + eol + eol +
                     "Fluxx is a game with one basic rule: Draw 1, Play 1." + eol + eol +
@@ -37,23 +39,36 @@ public class Table extends JFrame{ //extends JFrame{
                     "Discard down to the current Hand Limit (if any) and Keeper Limit (if any)." + eol + eol +
                     "The game will continue until one player meets the conditions of the current Goal."
     );
-    JButton play = new JButton("Play Game!");
-
+    JButton play = new JButton("Play Game!");   
+    
+    
     public Table(){
         //Gui stuff
         super("Fluxx, the Game");
         setBounds(0,0,720,720);
+        JPanel pane = new JPanel();
         //try {
+            
             //File title = new File("./Card Images/_CARD BACK.jpg");
             //BufferedImage introPic = ImageIO.read(title);
-            //JLabel label = new JLabel(new ImageIcon(introPic));
+            
+            
             Container container = this.getContentPane();
             container.setBackground(Color.WHITE);
-            container.add(new JLabel(new ImageIcon("./Card Images/_CARD BACK.jpg")));
+            ImageIcon image = new ImageIcon("Card Images/_CARD BACK.jpg");
+            JLabel j = new JLabel(" ", image, JLabel.CENTER);
+            
+            pane.add(j);
+            
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             container.add(pane);
-            pane.add(instructions);
-            pane.add(play);
+            
+            JPanel southPanel = new JPanel();
+            southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+            southPanel.add(instructions);
+            southPanel.add(play);
+            pane.add(BorderLayout.SOUTH, southPanel );
+            
             setVisible(true);
         //}catch(IOException e){
         //    System.out.println("Error 404: File not found");
