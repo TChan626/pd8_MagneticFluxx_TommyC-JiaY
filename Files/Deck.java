@@ -49,8 +49,6 @@ public class Deck{
     public static final Card TRASHSOMETHING = new Card("Trash Something", "Action", "./Card Images/TRASH SOMETHING.jpg");
     public static final Card STEALSOMETHING = new Card("Steal Something", "Action", "./Card Images/STEAL SOMETHING.jpg");
     public static final Card MIX = new Card("Mix It All Up", "Action", "./Card Images/MIX IT ALL UP.jpg");
-    public static final Card TODAY = new Card("Today's Special!", "Action", "./Card Images/TODAY'S SPECIAL!.jpg");
-    public static final Card TRASHDAY = new Card("It's Trash Day", "Action", "./Card Images/IT'S TRASH DAY.jpg");
     public static final Card DRAW2 = new Card("Draw 2", "New Rule", "./Card Images/DRAW 2.jpg");
     public static final Card DRAW3 = new Card("Draw 3", "New Rule", "./Card Images/DRAW 3.jpg");
     public static final Card DRAW4 = new Card("Draw 4", "New Rule", "./Card Images/DRAW 4.jpg");

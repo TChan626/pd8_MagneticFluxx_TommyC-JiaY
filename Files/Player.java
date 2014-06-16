@@ -13,6 +13,21 @@ public class Player{
         remainingPlays = 1;
     }
 
+    public void play(Card c) {
+        if (c.getType().equals("Action")) {
+
+        }
+        if (c.getType().equals("NewRule")) {
+
+        }
+        if (c.getType().equals("Goal")){
+
+        }
+        if(c.getType().equals("Keeper") || c.getType().equals("Creeper")) {
+
+        }
+    }
+
     public String get(int i){
         return hand.get(i).getName();
     }
@@ -73,6 +88,14 @@ public class Player{
     public Card remove(int i){
         return hand.remove(i);
     } //remove a card from hand
+
+    public Card remove(Card c){
+        for(int i = 0; i < hand.size(); i ++){
+            if(hand.get(i).equals(c))
+                return c;
+        }
+        return null;
+    }
 
     public void addToHand(Card c){
         hand.add(c);

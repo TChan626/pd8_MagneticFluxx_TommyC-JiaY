@@ -6,6 +6,7 @@ import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JLabel;
@@ -23,7 +24,17 @@ public class Table extends JFrame{ //extends JFrame{
     private ArrayList<Player> players;
 
     private boolean inflation;
+    private boolean firstPlayRandom;
+    private boolean noHandBonus;
+    private boolean poorBonus;
+    private boolean richBonus;
+    private boolean partyBonus;
+    private boolean getOnWithIt;
+    private boolean silverLining;
+    private boolean needPotato;
 
+    private int draw;
+    private int play;
 
     String eol = System.getProperty("line.separator"); //in order to differentiate for different OSes
     //Gui stuff
@@ -37,7 +48,7 @@ public class Table extends JFrame{ //extends JFrame{
                     "Discard down to the current Hand Limit (if any) and Keeper Limit (if any)." + eol + eol +
                     "The game will continue until one player meets the conditions of the current Goal."
     );
-    JButton play = new JButton("Play Game!");
+    JButton playButton = new JButton("Play Game!");
 
     public Table(){
         //Gui stuff
@@ -53,7 +64,7 @@ public class Table extends JFrame{ //extends JFrame{
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             container.add(pane);
             pane.add(instructions);
-            pane.add(play);
+            pane.add(playButton);
             setVisible(true);
         //}catch(IOException e){
         //    System.out.println("Error 404: File not found");
@@ -63,6 +74,7 @@ public class Table extends JFrame{ //extends JFrame{
         goal = null;
         goal2 = null;
         inflation = false;
+        draw = play = 1;
 
         deck = new Deck();
         discard = new Discard();
@@ -178,11 +190,17 @@ public class Table extends JFrame{ //extends JFrame{
     }
 
 
-    public void play(Card c){
-        if(c.getType().equals("Action")) {
+    public void play(Card c) {
+        if (c.getType().equals("Action")) {
 
         }
-        if(c.getType().equals("NewRule")){
+        if (c.getType().equals("NewRule")) {
+
+        }
+        if (c.getType().equals("Goal")){
+
+        }
+        if(c.getType().equals("Keeper") || c.getType().equals("Creeper")) {
 
         }
     }
@@ -238,11 +256,11 @@ public class Table extends JFrame{ //extends JFrame{
         if(inflation == true){
             p.draw(deck, 4);
             p.addRemainingPlays(3);
-            p.discard(discard,c);
+            p.discard(discard, c);
         }else{
             p.draw(deck, 3);
             p.addRemainingPlays(2);
-            p.discard(discard,c);
+            p.discard(discard, c);
         }
 
         while(setAside.size() > 0){
@@ -306,7 +324,7 @@ public class Table extends JFrame{ //extends JFrame{
         Card c = (Card)JOptionPane.showInputDialog(this, "Which card would you like to use again?",
                                                     "Let's Do That Again!", JOptionPane.PLAIN_MESSAGE, null,
                                                     available, available[0]);
-        play(c);
+        p1.play(c);
     }
 
     public void letsSimplify(Player p){
@@ -322,16 +340,16 @@ public class Table extends JFrame{ //extends JFrame{
         }
     }
 
-    public void noLimits(Player p) {
-        p.discard(discard, deck.NOLIMITS);
-        for (int i = 0; i < rules.size(); i++) {
-            if (rules.get(i).equals(deck.HL0) || rules.get(i).equals(deck.HL1) || rules.get(i).equals(deck.HL2) ||
-                    rules.get(i).equals(deck.KL2) || rules.get(i).equals(deck.KL3) || rules.get(i).equals(deck.KL4)) {
-                rules.remove(i);
-                i--;
-            }
-        }
-    }
+    //public void noLimits(Player p) {
+    //    p.discard(discard, deck.NOLIMITS);
+    //    for (int i = 0; i < rules.size(); i++) {
+    //        if (rules.get(i).equals(deck.HL0) || rules.get(i).equals(deck.HL1) || rules.get(i).equals(deck.HL2) ||
+    //                rules.get(i).equals(deck.KL2) || rules.get(i).equals(deck.KL3) || rules.get(i).equals(deck.KL4)) {
+    //            rules.remove(i);
+    //            i--;
+    //        }
+    //    }
+    //}
 
     private void swapArrayList(ArrayList<Card> list1, ArrayList<Card> list2){
         ArrayList<Card> temp = list1;
@@ -358,6 +376,259 @@ public class Table extends JFrame{ //extends JFrame{
             swapArrayList(players.get(0).getHand(), players.get(numPlayers - 1).getHand());
         }
     }
+
+    public void rulesReset(Player p){
+        p.discard(discard, deck.RESET);
+        rules = new ArrayList<Card>();
+    }
+
+    public void takeAnotherTurn(Player p){
+        p.discard(discard, deck.TURN2);
+        boolean turn2 = false;
+        while(p.getRemainingPlays() == 0 && turn2 == true){
+            p.draw(deck,draw);
+            p.addRemainingPlays(play);
+            turn2 = true;
+        }
+    }
+
+    private ArrayList<Player> selectAllButOne(ArrayList<Player> al, Player o){ //assume that o is in al
+        ArrayList<Player> retAL = new ArrayList<Player>(al.size() - 1);
+        for(int i = 0; i < al.size(); i ++){
+            if(!al.get(i).equals(o))
+                retAL.add(al.get(i));
+        }
+        return retAL;
+    }
+
+    public void taxation(Player p){
+        p.discard(discard, deck.TAXATION);
+        ArrayList<Player> playersWO = selectAllButOne(players, p);
+        if(inflation){
+            for(int i = 0; i < playersWO.size(); i ++){
+                playersWO.get(i).givePlayerCard(p, playersWO.get(i).remove(0));
+                playersWO.get(i).givePlayerCard(p, playersWO.get(i).remove(0));
+            }
+        }else {
+            for (int i = 0; i < playersWO.size(); i++) {
+                playersWO.get(i).givePlayerCard(p, playersWO.get(i).remove(0));
+            }
+        }
+    }
+
+    public void tradeHands(Player p1, Player p2){
+        p1.discard(discard, deck.TRADEHANDS);
+        swapArrayList(p1.getHand(), p2.getHand());
+    }
+
+    public void trashNewRule(Player p){
+        p.discard(discard, deck.TRASHNR);
+        Card[]list = new Card[rules.size()];
+
+        for(int i = 0; i < rules.size(); i ++){
+            list[i] = rules.get(i);
+        }
+
+        Card c = (Card)JOptionPane.showInputDialog(this,"Choose a New Rule to discard:",
+                                                    "Trash a New Rule",JOptionPane.PLAIN_MESSAGE,
+                                                    null, list, list[0]);
+        rules.remove(c);
+    }
+
+    public void useWhatYouTake(Player p1, Player p2){
+        p1.discard(discard, deck.USETAKE);
+
+        p1.play(p2.getHand().get(0));
+    }
+
+    public void creeperSweeper(Player p1){
+        p1.discard(discard, deck.SWEEPER);
+
+        for(int i = 0; i < players.size(); i ++){
+            if(players.get(i).hasCard(deck.WAR) || players.get(i).hasCard(deck.DEATH) ||
+               players.get(i).hasCard(deck.TAXES) || players.get(i).hasCard(deck.POTATO)){
+                players.get(i).getOnTable().remove(deck.WAR);
+                players.get(i).getOnTable().remove(deck.POTATO);
+                players.get(i).getOnTable().remove(deck.DEATH);
+                players.get(i).getOnTable().remove(deck.TAXES);
+            }
+        }
+    }
+
+    public void trashSomething(Player p1, Player p2) {
+        p1.discard(discard, deck.TRASHSOMETHING);
+        ArrayList<Card> stuff = new ArrayList<Card>();
+        for (int i = 0; i < p1.onTable().size(); i++) {
+            stuff.add(p1.onTable().get(i));
+        }
+
+        for (int i = 0; i < p2.onTable().size(); i++) {
+            stuff.add(p2.onTable().get(i));
+        }
+
+        Card[] options = new Card[stuff.size()];
+        for (int i = 0; i < stuff.size(); i++) {
+            options[i] = stuff.get(i);
+        }
+
+        Card c = (Card) JOptionPane.showInputDialog(this, "Choose a card to trash:", "Trash Something",
+                JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if (p1.getOnTable().contains(c))
+            p1.getOnTable().remove(c);
+        else if (p2.getOnTable().contains(c))
+            p2.getOnTable().remove(c);
+    }
+
+    public void stealSomething(Player p1, Player p2){
+        p1.discard(discard, deck.STEALSOMETHING);
+        Card[]options = p2.onTable().size();
+
+        for(int i = 0; i < p2.onTable().size(); i ++) {
+            options[i] = p2.onTable().get(i);
+        }
+
+        Card c = (Card)JOptionPane.showInputDialog(this, "Choose a card to steal:", "Steal Something",
+                                                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        p1.onTable().add(p2.onTable().remove(c));
+    }
+
+    public void mixItAllUp(Player p){
+        p.discard(discard, deck.MIX);
+        ArrayList<Card> mixer = new ArrayList<Card>();
+        for(int i = 0; i < players.size(); i ++){
+            for(int a = 0; a < players.get(i).getOnTable(); a ++){
+                mixer.add(players.get(i).getOnTable().remove(a));
+            }
+        }
+
+        Collections.shuffle(mixer);
+        int counter = 0;
+        while(mixer.size() > 0){
+            if(counter > players.size())
+                counter = 0;
+            players.get(counter).getOnTable().add(mixer.remove(0));
+            counter ++;
+        }
+    }
+
+
+    public void draw2(Player p){
+        rules.add(p.remove(deck.DRAW2));
+        prevDraw = draw;
+        if(inflation) {
+            draw = 3;
+        }else {
+            draw = 2;
+        }
+        if(prevDraw < draw){
+            p.draw(draw - prevDraw);
+        }
+    }
+    public void draw3(Player p){
+        rules.add(p.remove(deck.DRAW3));
+        prevDraw = draw;
+        if(inflation) {
+            draw = 4;
+        }else {
+            draw = 3;
+        }
+        if(prevDraw < draw){
+            p.draw(draw - prevDraw);
+        }
+    }
+    public void draw4(Player p){
+        rules.add(p.remove(deck.DRAW4));
+        prevDraw = draw;
+        if(inflation) {
+            draw = 5;
+        }else {
+            draw = 4;
+        }
+        if(prevDraw < draw){
+            p.draw(draw - prevDraw);
+        }
+    }
+    public void draw5(Player p){
+        rules.add(p.remove(deck.DRAW5));
+        prevDraw = draw;
+        if(inflation) {
+            draw = 6;
+        }else {
+            draw = 5;
+        }
+        if(prevDraw < draw){
+            p.draw(draw - prevDraw);
+        }
+    }
+
+    public void play2(Player p){
+        rules.add(p.remove(deck.PLAY2));
+        if(inflation)
+            play = 3;
+        else
+            play = 2;
+    }
+    public void play3(Player p){
+        rules.add(p.remove(deck.PLAY3));
+        if(inflation)
+            play = 4;
+        else
+            play = 3;
+    }
+    public void play4(Player p){
+        rules.add(p.remove(deck.PLAY4));
+        if(inflation)
+            play = 5;
+        else
+            play = 4;
+    }
+    public void playAll(Player p){
+        rules.add(p.remove(deck.PLAYALL));
+        play = Integer.MAX_VALUE;
+    }
+
+    public void doubleAgenda(Player p){
+        rules.add(p.remove(deck.DOUBLEAGENDA));
+    }
+
+    public void firstPlayRandom(Player p){
+        rules.add(p.remove(deck.FPRANDOM));
+    }
+
+    public void noHandBonus(Player p){
+        rules.add(p.remove(deck.NOHAND));
+    }
+
+    public void poorBonus(Player p){
+        rules.add(p.remove(deck.POOR));
+    }
+
+    public void richBonus(Player p){
+        rules.add(p.remove(deck.RICH));
+    }
+
+    public void partyBonus(Player p){
+        rules.add(p.remove(deck.PARTYBONUS));
+    }
+
+    public void getOnWithIt(Player p){
+        rules.add(p.remove(deck.GETONWITHIT));
+    }
+
+    public void silverLining(Player p){
+        rules.add(p.remove(deck.SILVER));
+    }
+
+    public void needPotato(Player p){
+        rules.add(p.remove(deck.NEEDPOTATO));
+    }
+
+
+
+    public void tenCards(Player p){
+        
+    }
+
 
     public String toString(){
         String retStr = "";
