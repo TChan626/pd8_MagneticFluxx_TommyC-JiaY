@@ -8,15 +8,11 @@ Create a Hand and a Board (could be extended)*******************
 Create all of the different cards
 set each card in hand to number value and have player type in the number instead of the card name
 create check methods to ensure that only those card that's in your hand gets played/discarded 
+made all of the different methods for each effect/card
+
 
 Still need to do
-
-Coding Creeper effects
-Coding the Action cards effects
-Coding the New Rules effects
-coding the goal effects(conditions)
+GUI!
 
 If there is time
-
-Create GUI
 AI?

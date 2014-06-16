@@ -13,20 +13,7 @@ public class Player{
         remainingPlays = 1;
     }
 
-    public void play(Card c) {
-        if (c.getType().equals("Action")) {
 
-        }
-        if (c.getType().equals("NewRule")) {
-
-        }
-        if (c.getType().equals("Goal")){
-
-        }
-        if(c.getType().equals("Keeper") || c.getType().equals("Creeper")) {
-
-        }
-    }
 
     public String get(int i){
         return hand.get(i).getName();

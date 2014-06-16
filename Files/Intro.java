@@ -26,7 +26,7 @@ public class Intro extends JFrame implements ActionListener{
                         "how the game plays. There is no Goal of the game until someone plays one." + eol + eol + eol + eol +
                         "On your turn, draw the number of cards required, play the number of cards required," + eol +
                         "Discard down to the current Hand Limit (if any) and Keeper Limit (if any)." + eol + eol +
-                        "The game will continue until one player meets the conditions of the current Goal."
+                        "The game will continue until one player meets the conditions of the current Goal." + eol
         );
         playGame = new JButton("Play Game!");
         pane = new JPanel();
@@ -56,7 +56,8 @@ public class Intro extends JFrame implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
-
+        dispose();
+        new Table();
     }
 
     public static void main(String[]args){
