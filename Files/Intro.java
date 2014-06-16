@@ -57,7 +57,13 @@ public class Intro extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
         dispose();
-        new Table();
+        Table table = new Table();
+        JFrame jf = new JFrame();
+        jf.setTitle("Fluxx, the Game");
+        jf.setSize(720,720);
+        jf.setVisible(true);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.add(table);
     }
 
     public static void main(String[]args){

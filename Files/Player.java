@@ -80,8 +80,18 @@ public class Player{
         for(int i = 0; i < hand.size(); i ++){
             if(hand.get(i).equals(c))
                 return c;
+
         }
         return null;
+    }
+
+    public void discardFromTable(Discard dis, Card c){
+        for(int i = 0; i < onTable; i ++){
+            if(onTable.get(i).equals(c)){
+                dis.add(onTable.remove(i));
+                break;
+            }
+        }
     }
 
     public void addToHand(Card c){

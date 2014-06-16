@@ -34,7 +34,6 @@ public class Table extends JPanel{ //extends JFrame{
 
     private boolean doubleAgenda;
     private boolean inflation;
-    private boolean firstPlayRandom;
     private boolean noHandBonus;
     private boolean poorBonus;
     private boolean richBonus;
@@ -71,34 +70,35 @@ public class Table extends JPanel{ //extends JFrame{
         players.get(1).draw(deck, 3);
     }
 
-    public void paintComponent(Graphics g){
-
+    public void paintComponent(Graphics g) {
+        Player p1 = players.get(0);
+        Player p2 = players.get(1);
 
         super.paintComponent(g);
         ImageIcon i = new ImageIcon("./Card Images/_CARD BACK MINI.jpg");
         i.paintIcon(this, g, 20, 60);
-        i.paintIcon(this, g, 20, 560);
+        i.paintIcon(this, g, 20, 540);
 
         String numCards1 = "x " + players.get(0).size();
         String numCards2 = "x " + players.get(1).size();
         g.drawString(numCards2, 160, 110);
-        g.drawString(numCards1, 160, 610);
+        g.drawString(numCards1, 160, 590);
 
         ImageIcon i2 = new ImageIcon("./Card Images/_CARD BACK SMALL.jpg");
-        i2.paintIcon(this, g, 10, 260);
+        i2.paintIcon(this, g, 10, 240);
 
-        g.drawString("Deck", 30, 240);
+        g.drawString("Deck", 30, 220);
 
         ImageIcon i3 = discard.getLast().getPicture();
-        i3.paintIcon(this, g, 540, 260);
-        g.drawString("Discard", 560, 240);
+        i3.paintIcon(this, g, 540, 240);
+        g.drawString("Discard", 560, 220);
 
         String yourKeepers = "";
         String yourCreepers = "";
-        for(int a = 0; a < players.get(0).getOnTable().size(); a ++){
-            if(players.get(0).getOnTable().get(a).getType().equals("Keeper"))
+        for (int a = 0; a < players.get(0).getOnTable().size(); a++) {
+            if (p1.getOnTable().get(a).getType().equals("Keeper"))
                 yourKeepers += players.get(0).getOnTable().get(a).getName() + ",";
-            if(players.get(0).getOnTable().get(a).getType().equals("Creeper"))
+            if (p1.getOnTable().get(a).getType().equals("Creeper"))
                 yourCreepers += players.get(0).getOnTable().get(a).getName() + ",";
         }
 
@@ -109,15 +109,36 @@ public class Table extends JPanel{ //extends JFrame{
 
         String theirKeepers = "";
         String theirCreepers = "";
-        for(int a = 0; a < players.get(1).getOnTable().size(); a ++){
-            if(players.get(1).getOnTable().get(a).getType().equals("Keeper"))
+        for (int a = 0; a < players.get(1).getOnTable().size(); a++) {
+            if (p2.getOnTable().get(a).getType().equals("Keeper"))
                 yourKeepers += players.get(1).getOnTable().get(a).getName() + ",";
-            if(players.get(1).getOnTable().get(a).getType().equals("Creeper"))
+            if (p2.getOnTable().get(a).getType().equals("Creeper"))
                 yourCreepers += players.get(1).getOnTable().get(a).getName() + ",";
         }
 
         g.drawString("Player 2's Keepers: " + theirKeepers, 20, 20);
         g.drawString("Player 2's Creepers: " + theirCreepers, 20, 40);
+
+        if (p1.hasCard(deck.WAR) != -1)
+            warEffect(p1, p2);
+
+        if(p2.hasCard(deck.WAR) != -1)
+            warEffect(p2, p1);
+
+        if (p1.hasCard(deck.TAXES) != -1)
+            taxesEffect(p1);
+
+        if(p2.hasCard(deck.TAXES) != -1)
+            taxesEffect(p2);
+
+        if(p1.hasCard(deck.DEATH) != -1) {
+            deathEffect(p1);
+        }
+
+        if(p2.hasCard(deck.DEATH) != -1) {
+            deathEffect(p2);
+        }
+
         repaint();
     }
 
@@ -202,11 +223,11 @@ public class Table extends JPanel{ //extends JFrame{
         p1.givePlayerTable(p2, deck.POTATO);
     }
 
-    public void deathEffect(Player p, Card c){
+    public void deathEffect(Player p){
         if(p.getOnTable().size() == 1) {
             int n = JOptionPane.showConfirmDialog(this, "Would you like to discard Death?", "Death Beckons", JOptionPane.YES_NO_OPTION);
             if(n == JOptionPane.YES_OPTION)
-                p.discard(discard, c);
+                p.discardFromTable(discard, deck.DEATH);
         }else{
             ArrayList<Card> possibilities1 = new ArrayList<Card>(p.size() - 1);
             for(int i = 0; i < p.size(); i ++){
@@ -245,77 +266,76 @@ public class Table extends JPanel{ //extends JFrame{
 
     }
 
-/*
-    public void drawTwoUseEm(Player p){
-        p.discard(discard, deck.DRAW2USE2);
-        ArrayList<Card> setAside = p.getHand();
-
-        for(int i = 0; i < p.size(); i ++){
-            setAside.add(p.remove(0));
-        }
-
-        if(inflation == true){
-            p.draw(deck, 3);
-            p.addRemainingPlays(3);
-        }else{
-            p.draw(deck, 2);
-            p.addRemainingPlays(2);
-        }
-
-        while(setAside.size() > 0) {
-            p.addToHand(setAside.remove(0));
-        }
-    }
-
-    public void drawThreeUseTwo(Player p, Card c){
-        p.discard(discard, deck.DRAW3USE2);
-        ArrayList<Card> setAside = p.getHand();
-
-        for(int i = 0; i < p.size(); i ++){
-            setAside.add(p.remove(0));
-        }
-
-        if(inflation == true){
-            p.draw(deck, 4);
-            p.addRemainingPlays(3);
-            p.discard(discard, c);
-        }else{
-            p.draw(deck, 3);
-            p.addRemainingPlays(2);
-            p.discard(discard, c);
-        }
-
-        while(setAside.size() > 0){
-            p.addToHand(setAside.remove(0));
-        }
-    }
-
-    public void everybodyGetsOne(Player p, boolean first){
-        p.discard(discard, deck.EVERY1);
-        int num = players.size();
-
-        ArrayList<Card> setAside = p.getHand();
-        for(int i = 0; i < p.size(); i ++){
-            setAside.add(p.remove(0));
-        }
-
-        p.draw(deck, num);
-
-        for(int i = 0; i < num; i ++) {
-            if (first) {
-                p.givePlayerCard(p2, p.remove(0));
-                while (setAside.size() > 0) {
-                    p.addToHand(setAside.remove(0));
-                }
-            } else{
-                p.givePlayerCard(p2, p.remove(1));
-                while (setAside.size() > 0) {
-                    p.addToHand(setAside.remove(0));
-                }
-            }
-        }
-    }
-*/
+//
+//    public void drawTwoUseEm(Player p){
+//        p.discard(discard, deck.DRAW2USE2);
+//        ArrayList<Card> setAside = p.getHand();
+//
+//        for(int i = 0; i < p.size(); i ++){
+//            setAside.add(p.remove(0));
+//        }
+//
+//        if(inflation == true){
+//            p.draw(deck, 3);
+//            p.addRemainingPlays(3);
+//        }else{
+//            p.draw(deck, 2);
+//            p.addRemainingPlays(2);
+//        }
+//
+//        while(setAside.size() > 0) {
+//            p.addToHand(setAside.remove(0));
+//        }
+//    }
+//
+//    public void drawThreeUseTwo(Player p, Card c){
+//        p.discard(discard, deck.DRAW3USE2);
+//        ArrayList<Card> setAside = p.getHand();
+//
+//        for(int i = 0; i < p.size(); i ++){
+//            setAside.add(p.remove(0));
+//        }
+//
+//        if(inflation == true){
+//            p.draw(deck, 4);
+//            p.addRemainingPlays(3);
+//            p.discard(discard, c);
+//        }else{
+//            p.draw(deck, 3);
+//            p.addRemainingPlays(2);
+//            p.discard(discard, c);
+//        }
+//
+//        while(setAside.size() > 0){
+//            p.addToHand(setAside.remove(0));
+//        }
+//    }
+//
+//    public void everybodyGetsOne(Player p, boolean first){
+//        p.discard(discard, deck.EVERY1);
+//        int num = players.size();
+//
+//        ArrayList<Card> setAside = p.getHand();
+//        for(int i = 0; i < p.size(); i ++){
+//            setAside.add(p.remove(0));
+//        }
+//
+//        p.draw(deck, num);
+//
+//        for(int i = 0; i < num; i ++) {
+//            if (first) {
+//                p.givePlayerCard(p2, p.remove(0));
+//                while (setAside.size() > 0) {
+//                    p.addToHand(setAside.remove(0));
+//                }
+//            } else{
+//                p.givePlayerCard(p2, p.remove(1));
+//                while (setAside.size() > 0) {
+//                    p.addToHand(setAside.remove(0));
+//                }
+//            }
+//        }
+//    }
 
     public void exchangeKeepers(Player p1, Player p2, Card c1, Card c2){
         p1.discard(discard, deck.EXCHANGE);
@@ -589,10 +609,6 @@ public class Table extends JPanel{ //extends JFrame{
 
     public void doubleAgenda(Player p){
         rules.add(p.remove(deck.DOUBLEAGENDA));
-    }
-
-    public void firstPlayRandom(Player p){
-        rules.add(p.remove(deck.FPRANDOM));
     }
 
     public void noHandBonus(Player p){
@@ -989,8 +1005,6 @@ public class Table extends JPanel{ //extends JFrame{
 
             if(c.equals(deck.DOUBLEAGENDA))
                 doubleAgenda(p);
-            if(c.equals(deck.FPRANDOM))
-                firstPlayRandom(p);
             if(c.equals(deck.NOHAND))
                 noHandBonus(p);
             if(c.equals(deck.POOR))
@@ -1019,6 +1033,12 @@ public class Table extends JPanel{ //extends JFrame{
 
             }else{
                 goal = c;
+            }
+            if(p.hasCard(deck.POTATO) != -1){
+                if(p.equals(players.get(0)))
+                    potatoEffect(p, players.get(1));
+                else
+                    potatoEffect(p, players.get(0));
             }
         }
         if(c.getType().equals("Keeper")) {
