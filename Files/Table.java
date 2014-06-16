@@ -1,3 +1,5 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +14,14 @@ import java.util.Collections;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class Table extends JFrame{ //extends JFrame{
+public class Table extends JPanel{ //extends JFrame{
     
     private Deck deck; //deck to draw from
     private Discard discard; //discarded cards (action,goals)
@@ -39,6 +43,8 @@ public class Table extends JFrame{ //extends JFrame{
     private boolean silverLining;
     private boolean needPotato;
 
+    private Card falseCard;
+
     private int draw;
     private int play;
 
@@ -46,20 +52,6 @@ public class Table extends JFrame{ //extends JFrame{
 
 
     public Table(){
-        //Gui stuff
-        super("Fluxx, the Game");
-        setBounds(0,0,720,720);
-        JPanel pane = new JPanel();
-
-        Container container = this.getContentPane();
-        container.setBackground(Color.WHITE);
-
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        container.add(pane);
-        //pane.add(playButton);
-        setVisible(true);
-
         turn = 0;
 
         rules = new ArrayList<Card>();
@@ -68,10 +60,67 @@ public class Table extends JFrame{ //extends JFrame{
         inflation = false;
         draw = play = 1;
 
+        falseCard = new Card("Temporary", "New Rule", "./Card Images/_CARD BACK SMALL.jpg");
         deck = new Deck();
         discard = new Discard();
+        discard.add(falseCard);
         players = new ArrayList<Player>();
+        players.add(new Player());
+        players.add(new Player());
+        players.get(0).draw(deck, 3);
+        players.get(1).draw(deck, 3);
     }
+
+    public void paintComponent(Graphics g){
+
+
+        super.paintComponent(g);
+        ImageIcon i = new ImageIcon("./Card Images/_CARD BACK MINI.jpg");
+        i.paintIcon(this, g, 20, 60);
+        i.paintIcon(this, g, 20, 560);
+
+        String numCards1 = "x " + players.get(0).size();
+        String numCards2 = "x " + players.get(1).size();
+        g.drawString(numCards2, 160, 110);
+        g.drawString(numCards1, 160, 610);
+
+        ImageIcon i2 = new ImageIcon("./Card Images/_CARD BACK SMALL.jpg");
+        i2.paintIcon(this, g, 10, 260);
+
+        g.drawString("Deck", 30, 240);
+
+        ImageIcon i3 = discard.getLast().getPicture();
+        i3.paintIcon(this, g, 540, 260);
+        g.drawString("Discard", 560, 240);
+
+        String yourKeepers = "";
+        String yourCreepers = "";
+        for(int a = 0; a < players.get(0).getOnTable().size(); a ++){
+            if(players.get(0).getOnTable().get(a).getType().equals("Keeper"))
+                yourKeepers += players.get(0).getOnTable().get(a).getName() + ",";
+            if(players.get(0).getOnTable().get(a).getType().equals("Creeper"))
+                yourCreepers += players.get(0).getOnTable().get(a).getName() + ",";
+        }
+
+
+        g.drawString("Player 1's Keepers: " + yourKeepers, 20, 640);
+        g.drawString("Player 1's Creepers: " + yourCreepers, 20, 660);
+
+
+        String theirKeepers = "";
+        String theirCreepers = "";
+        for(int a = 0; a < players.get(1).getOnTable().size(); a ++){
+            if(players.get(1).getOnTable().get(a).getType().equals("Keeper"))
+                yourKeepers += players.get(1).getOnTable().get(a).getName() + ",";
+            if(players.get(1).getOnTable().get(a).getType().equals("Creeper"))
+                yourCreepers += players.get(1).getOnTable().get(a).getName() + ",";
+        }
+
+        g.drawString("Player 2's Keepers: " + theirKeepers, 20, 20);
+        g.drawString("Player 2's Creepers: " + theirCreepers, 20, 40);
+        repaint();
+    }
+
 
     
     public Deck getDeck(){
@@ -128,8 +177,6 @@ public class Table extends JFrame{ //extends JFrame{
         }else
             throw new IllegalArgumentException("The Card must be a Goal");
     } //Double Agenda
-
-
 
     public void warEffect(Player p1, Player p2){
         boolean hasPeace = (p1.hasCard(deck.PEACE) != -1);
@@ -990,5 +1037,11 @@ public class Table extends JFrame{ //extends JFrame{
 
     public static void main(String[]args){
         Table table = new Table();
+        JFrame jf = new JFrame();
+        jf.setTitle("Fluxx, the Game");
+        jf.setSize(720,720);
+        jf.setVisible(true);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.add(table);
     }
 }

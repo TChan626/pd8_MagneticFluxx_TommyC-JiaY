@@ -15,6 +15,10 @@ public class Discard{
     public Card get(int i){
 	return dis.get(i);
     }
+
+    public Card getLast(){
+        return dis.get(dis.size() - 1);
+    }
     
     public int size(){
 	return dis.size();

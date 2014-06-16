@@ -1,16 +1,18 @@
+import javax.swing.*;
+import javax.swing.ImageIcon;
 import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 
 public class Card{
 
     private String name,type;
-    private File file;
-    private Image picture;
+    private ImageIcon picture;
 
     public Card(String name, String type, String file){
 	    this.name = name;
 	    this.type = "";
-        this.file = new File(file);
+        this.picture = new ImageIcon(file);
     }
 
     public String getName(){
@@ -21,7 +23,7 @@ public class Card{
 	    return type;
     }
 
-    public Image getPicture(){
+    public ImageIcon getPicture(){
         return picture;
     }
 
